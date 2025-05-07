@@ -1,0 +1,105 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "bundler@latest": {
+      "last_modified": "2025-03-13T11:38:39Z",
+      "resolved": "github:NixOS/nixpkgs/573c650e8a14b2faa0041645ab18aed7e60f0c9a#bundler",
+      "source": "devbox-search",
+      "version": "2.6.2",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/qq43yxzp3phncb7lp6laqn25chhhr2ww-bundler-2.6.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/qq43yxzp3phncb7lp6laqn25chhhr2ww-bundler-2.6.2"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/brippr8s99vsr79glvzpmpv70sssj9ns-bundler-2.6.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/brippr8s99vsr79glvzpmpv70sssj9ns-bundler-2.6.2"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/298d8n3pk5wngb2s8hphhrnxq68lqrnw-bundler-2.6.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/298d8n3pk5wngb2s8hphhrnxq68lqrnw-bundler-2.6.2"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/dwf28h9xywr6m0j951jaw8sq7q344m5w-bundler-2.6.2",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/dwf28h9xywr6m0j951jaw8sq7q344m5w-bundler-2.6.2"
+        }
+      }
+    },
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "last_modified": "2025-05-04T22:22:57Z",
+      "resolved": "github:NixOS/nixpkgs/ed30f8aba41605e3ab46421e3dcb4510ec560ff8?lastModified=1746397377&narHash=sha256-5oLdRa3vWSRbuqPIFFmQBGGUqaYZBxX%2BGGtN9f%2Fn4lU%3D"
+    },
+    "jekyll@latest": {
+      "last_modified": "2025-04-09T17:27:46Z",
+      "resolved": "github:NixOS/nixpkgs/67d2b8200c828903b36a6dd0fb952fe424aa0606#jekyll",
+      "source": "devbox-search",
+      "version": "4.4.1",
+      "systems": {
+        "aarch64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/6lz2fn43qc5ar7k27zrkz00962mq8v2l-jekyll-4.4.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/6lz2fn43qc5ar7k27zrkz00962mq8v2l-jekyll-4.4.1"
+        },
+        "aarch64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/q6my9yk56qrmgqwl09bjfi1pi24kb9bq-jekyll-4.4.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/q6my9yk56qrmgqwl09bjfi1pi24kb9bq-jekyll-4.4.1"
+        },
+        "x86_64-darwin": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/ms3iz4q3q690wclcdcn3xvrifpsai4zk-jekyll-4.4.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/ms3iz4q3q690wclcdcn3xvrifpsai4zk-jekyll-4.4.1"
+        },
+        "x86_64-linux": {
+          "outputs": [
+            {
+              "name": "out",
+              "path": "/nix/store/5fxj2v1xaqxx5ghpkdfj71avys4b91xw-jekyll-4.4.1",
+              "default": true
+            }
+          ],
+          "store_path": "/nix/store/5fxj2v1xaqxx5ghpkdfj71avys4b91xw-jekyll-4.4.1"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "Welcome to our technical blog"
+date:   2025-05-07 08:49:18 +0200
+categories: wp0
+---
+
+We are very pleased to got our grant proposal to Innosuisse accepted early
+this year.
+On the 7th of April 2025 we officially started work on the grant called
+`Secure and Privacy-Preserving Credentials for E-ID` with the Innosuisse
+ID `101.292 IP-ICT`.
+Throughout the grant, we want to publish every 2 weeks a short post presenting
+our latest findings.
