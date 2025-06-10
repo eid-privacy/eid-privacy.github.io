@@ -12,7 +12,7 @@ identities, followed by a set of evaluation criteria, which are then
 applied to the elements of the taxonomy which are currently being
 discussed.
 
-Here is a first overview of the first levels of our proposed taxonomy,Here is an overview of the first levels of our proposed taxonomy,
+Here is an overview of the first levels of our proposed taxonomy,
 for you to discuss:
 
 - Taxonomy for privacy-preserving electronic identities
