@@ -1,0 +1,41 @@
+---
+layout: post
+title:  "Taxonomy 101"
+date:   2025-06-10 07:30:00 +0200
+categories: WP1
+---
+
+As the work package 1 - Bla - is drawing to a close, we started to write a
+Systematization of Knowledge (SoK) paper to summarize our findings.
+The SoK paper starts with a taxonomy for privacy-preserving electronic
+identities, followed by a set of evaluation criteria, which are then
+applied to the elements of the taxonomy which are currently being
+discussed.
+
+Here is a first overview of the first levels of our proposed taxonomy,
+for you to discuss:
+
+- Taxonomy for privacy-preserving electronic identities
+  - Goals and threats - what does it mean to have a privacy-preserving eID
+    - Privacy goals - what we want to protect
+    - Threat models - possible attacks to be averted
+    - Actors - who we consider in our paper
+  - Solution foundations and implementations - how the Goals and Threats can be implemented
+    - Cryptographic building blocks - algorithms and data structures to solve the goals and threats
+    - Hardware security - protecting access to private keys
+    - Data structures - available solutions to encapsulate the cryptographic building blocks
+  - Regulatory and normative frameworks - how the solution is bound by documents
+    - Legal texts - proposed laws, directives, and ordinances
+    - Technical references - more detailed instructions how to implement the laws
+    - Standards - existing definitions of algorithms and data structures
+
+There is still some flux with one or the other sub-category, but the general structure
+is now fixed. We'll base our paper on these descriptions, and use the _Goals and threats_
+to evaluate both the _Solution foundations_, as well as the _Regulatory frameworks_.
+Another evaluation is between the _Solution foundations_ and the _Regulatory frameworks_,
+as some of the proposed solutions might not fit the requirements of the
+regulatory frameworks.
+
+If you want to give feedback on our taxonomy, please reach out to
+[Linus Gasser](mailto:linus.gasser@epfl.ch?subject=TechBlog-Taxonomy).
+
