@@ -5,10 +5,11 @@ date:   2025-10-10 08:00:00 +0200
 categories: wp1
 ---
 
+TODO: add publication year
+
 In "Scalable, transparent, and post-quantum secure computational integrity"[^1], Eli Ben-Sasson et al. present a transparent zero-knowledge proof system named "ZK-STARK".
 Their work also includes a comparison to other *implemented* systems according to a few criteria.
 This prompted us to use this comparison and extend it with our interpretation focusing on digital identity systems.
-In this piece, we'd like to summarize and interpret that comparison in the light of the requirements
 
 # Comparing ZK systems
 
@@ -19,7 +20,7 @@ Here's the table used to summarize the comparison at page 10 of the STARK paper.
 # Requirements for digital identity systems
 
 When thinking about digital identity, the most interesting ZK constructs are:
-- transparent – the lowest the overhead for global coordination and trust requirements, the better
+- transparent – the lower the overhead for global coordination and trust requirements, the better
 - easy on the prover's resources – when designing for people identity, the provers in ZK interactions are more often than not consumer hardware. It must be quick to prove something in a ZK system
 - more lenient with the verifiers – for now, we model verifiers with access to computing power reasonably more powerful than the prover's  (i.e.: not LLM-training hardware, but also not portable device hardware).
 
@@ -28,10 +29,12 @@ The leftover question is: do we need that to be post-quantum secure ? Ideally, y
 ## A note on prover's scalability 
 
 In most public sector digital identity proposals, credentials are required to be signed using ECDSA.
-This implies the use of very specific mathematical constructs that can be very costly to emulate in arithmetic used by SNARK constructions.
+This implies the use of specific mathematical constructs that can be very costly to emulate in arithmetic used by proof systems relying on arithmetic circuits.
 
-This means: just because *prover scalability* has a green *yes* in a table does not mean it is practically feasible to use such system for zero-knowledge presentation of ECDSA signed credentials.
+This means: just because *prover scalability* has a green *yes* in a table does not imply it is practically feasible to use such system for zero-knowledge presentation of ECDSA signed credentials.
 Some publications use clever constructions to make these computations more efficient: ZKAttest[^2], and Crescent[^3] that uses Spartan[^4] with the Tom-256 curve presented in ZKAttest.
+
+TODO: what does Longfellow do to manage that ?
 
 # Breakdown of the relevant categories
 
@@ -56,7 +59,7 @@ The benchmarks of Hyrax show Ligero[^7] (see MPC paragraph) to be faster for the
 Also called "MPC-in-the-head", this model builds ZK-PCP proofs based on secure MPC protocols.
 The most relevant for us here is Ligero, it is very efficient for provers and has been used by Google when building Longfellow-zk, a ZK proof system for credentials signed with ECDSA[^8]
 
-## ZK-STARK
+### ZK-STARK
 
 As all feature comparison require, ZK-STARK ticks all the boxes in the table.
 There are caveats however, one of which is formulated by Matteo Frigo and abhi shelat in their work on Longfellow[^6]:
@@ -70,6 +73,8 @@ Ligero's authors make the same statement:
 > preliminary comparison with the concrete efficiency of our construction suggests that our construction is generally more attractive in terms of prover computation time and also in terms of proof size for smaller circuits (say, of size comparable to a few SHA-256 circuits), whereas the construction from [the ZK-STARK paper] is more attractive in terms of verifier computation time and proof size for larger circuits.
 
 # Notable exception to the "no public setup"
+
+TODO: make coherent
 
 Microsoft Research and UoC Berkeley published a ZK system for existing credentials named "Crescent".
 It is notable because it starts from the same premise as Longfellow (building on top of existing credential and signature schemes), but proceeds very differently.
@@ -90,7 +95,7 @@ Some would require a more careful analysis of the underlying circuits to be able
 
 Ligero itself is also more attractive than alternatives such as Hyrax – it is also post-quantum secure, scoring bonus points.
 zk-STARKs have attractive properties but mostly for a specific kind of circuits (sequential work).
-Regardless of circuit size, the construction from Longfellow is very attractive as the combination of Ligero and Sumcheck plus all the technical optimization performed by the authors greatly reduce the impact of the circuit size on performances.
+Regardless of circuit size, the construction from Longfellow is very attractive as the combination of Ligero and Sumcheck plus all the technical optimization performed by the authors greatly reduce the impact of the circuit size on performance.
 
 # References
 
