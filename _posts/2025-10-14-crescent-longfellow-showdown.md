@@ -22,22 +22,49 @@ categories: wp0
 * benchmarks
 - implementations
 # Suitability for Swiyu
-- SD-JWT
-- Revocation
-- Base registry / trust registry? - we don't want to hide the issuer of the credentials
-	- W3C-DID are probably public inputs to the circuit
-- What other components need to be taken into account?
+Both Longfellow and Cresent provide a complete Anonymous Identity solution.  
+Longfellow's concentration is on two things:
+1. Performance
+2. ISO standard compatibility
+
+While Cresent's focus was on:
+1. Quick adoption
+2. Ease of use
+
+Along with the specific needs for Swiyu, one of these two solutions might be more suitable than the other.  
+The Swiyu features that are relevant here are:
+- Credential format: Swiyu uses SD-JWT VC
+- Holder-binding: Swiyu requires holder binding with ECDSA (compatible with existing TEEs)
+- Revocation: Currently, Swiyu have a status list implementation for revocation
+- Visual presentation: Swiyu uses OCA
+- Communication protocols: Are these technologies compatible with OID4VCI / OID4VP which Swiyu uses?
+- Identifier usage: Swiyu uses DID:webvh 
 
 ## Longfellow (@Lanterno)
-- CBor <-> SD-JWT
-	- Where does CBor (mDoc, EUDI) and SD-JWT (IETF, Swiyu) come from?
-    - Check the appendix on CBOR in the longfellow paper
-	- Does an SD-JWT module exist?
-		- Yes: Is it compatible with Swiyu SD-JWT?
-		- No: what is the main difficulty? -> writing a circuit, but how?
-			- Interesting question to ask Longfellow
-            
-- Does a revocation circuit exist ? -> Swiyu does Token Status list (JWTs) so probably not if an SD-JWT module does not exist
+The longfellow solution takes the ISO standard mDL (ISO/IEC 18013‑5) as its target credential format.
+along with standard ECDSA as it's chosen signature for both the issuer and the holder wallet. 
+- Credential Formats:  
+      The ISO mDL format was picked as it's one of the most used formats in the USA, and it's also mandated in the EUDI specification in Europe.
+  However, The choice of mDL is not critical to the rest of the work, and should be possible to replace with another credential format.
+- Communication Protocols:  
+      The OID4VC protocols -in fact- work well with both SD-JWT and the ISO mDL formats [as outlined in the SD-JWT spec](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html#name-iso-mdl).
+- Holder Binding:  
+      The long fellow paper indicates that the public key of the holder's wallet must be added to the mDL document, hence ensuring holder binding later.
+- Revocation:  
+       Swiyu uses Token Status Lists which was designed to work with both mDL and CBOR, so longfellow would work seemlessly here as well.
+    reference: https://swiyu-admin-ch.github.io/technology-stack/#credential-revocation--token-status-list
+- Identifier usage:  
+	longfellow functionality requires access to the cryptographic key pairs of the actors using it (as expected). However, it doesn't require any specific standard for the format of the identity of the issuer or holder.
+	Therefore, the choice of identifiers is not relevant as long as the identifier mechanism is able to provide the keys to the longfellow library when needed. 
+
+Migrating from mDL to SD-JWT:   
+	In Swiyu, the IETF standard SD-JWT is used. It stands for Selective Disclosure JWT. 
+If longfellow is used within Swiyu, it makes sense to change its supported credential format from mDL to SD-JWT.
+However, longfellow support Zero-Knowledge proofs which elimiates the need for selective disclosure, so does it make sense to still use SD-JWT in Swiyu?  
+If it's acceptable to only use JWT, the longfellow team is already working on an implementation for that in their library as can be found here: https://github.com/google/longfellow-zk/tree/main/lib/circuits/jwt.  
+However, something worth noting here is that the CBOR structure is more circuit-friendly (hence Zero-Knowledge proofs friendly) than SD-JWT which would make
+migrating from mDL/CBOR to SD-JWT or any other JSON-based credential format difficult. However, longfellow's current effort to support JWT is promising, and could be used in Swiyu.
+
 ## Crescent 
 * SD-JWT
 * Is pre-computation cost acceptable ?
