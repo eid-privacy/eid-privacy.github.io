@@ -73,9 +73,20 @@ However, longfellow's current effort to support JWT is promising, and could be u
 (LiGa: please add a sentence or two if the JWT support is found in an article, issue, PR, or the code, together with a link)
 
 ## Crescent 
-* SD-JWT
-* Is pre-computation cost acceptable ?
-* Is public setup acceptable ?
+The Microsoft Crescent solution sacrifies performance to provide support for both mDL and JWT. 
+The library they offer also provides more user-friendly intructions for running the library quickly, and easily intergrate it.
+
+Guessing before confirming:
+As we've mentioned in the longfellow, we shouldn't expect SD-JWT support as having ZKP JWT support means we don't need Selective Disclosure anymore. 
+For holder binding, Revocation, Identifier Reference, and Communication protocols, Crescent should fit in with minimal work.
+That minimal work will target adjusting the communication protocol to the credential format. 
+
+However, Crescent have other aspects that need to be mentioned here: 
+- Pre-computation time:  
+    For every new credential added to the wallet, Crescent needs to do a once-per-credential setup which can take up
+to 26 seconds accordingly to microsoft's
+benchmarks (in the case of JWT). However, this can be handled in the application background, and appear very smoothly using some UX optimizations.
+
 # Takeaway points as conclusion
 - A prioris:
 	- Linus: is longfellow flexible and composable enough to solve other problems than just SD and holder binding? E.g., can we put it as a module in docknetwork?
