@@ -28,8 +28,14 @@ Longfellow concentrates on two things:
 2. ISO standard compatibility to the mDoc format
 
 Cresent focuses on:
-1. Quick adoption (LiGa: how do they want to achieve this?)
-2. Ease of use (LiGa: for the developers, or the users?)
+1. Quick adoption 
+	1. By providing clearer documentation.
+	2. Providing sample application.
+	3. Providing support to the two main credential types.
+	4. Using more popular programming language is this context (Rust).
+2. Ease of use
+	1. Clear instructions on installation, and usage
+	2. The sample app provides a lower barrier to use
 
 Along with the specific needs for Swiyu, one of these two solutions might be more suitable than the other.  
 The Swiyu features that are relevant here are:
@@ -41,8 +47,9 @@ The Swiyu features that are relevant here are:
 - Identifier usage: Swiyu uses DID:webvh 
 
 ## Longfellow (@Lanterno)
-The longfellow solution takes the ISO standard mDL (ISO/IEC 18013‑5) as its target credential format. (LiGa: my ignorance - what is the difference between mDL and mDoc?)
-along with standard ECDSA as it's chosen signature for both the issuer and the holder wallet. 
+The longfellow solution takes mDoc from the ISO mDL standard (ISO/IEC 18013‑5) as its target
+credential format along with standard ECDSA as it's chosen signature for both the issuer and the holder wallet. 
+
 - Credential Formats:  
       The ISO mDL format was picked as it's one of the most used formats in the USA, and it's also mandated in the EUDI specification in Europe.
   However, the choice of mDL is not critical to the rest of the work, and should be possible to replace with another credential format.
@@ -70,7 +77,7 @@ migrating from mDL/CBOR to SD-JWT or any other JSON-based credential format diff
 - SD-JWT - might be the easiest, if the field values are at fixed positions, due to hashes and ordering of the fields by the issuer
 ))
 However, longfellow's current effort to support JWT is promising, and could be used in Swiyu.
-(LiGa: please add a sentence or two if the JWT support is found in an article, issue, PR, or the code, together with a link)
+We see that is the existing JWT circuits maintained in the [code](https://github.com/google/longfellow-zk/tree/main/lib/circuits/jwt). However, it's still work in progress as stated in the [review by dyne](https://news.dyne.org/longfellow-zero-knowledge-google-zk/).
 
 ## Crescent 
 The Microsoft Crescent solution sacrifies performance to provide support for both mDL and JWT. 
