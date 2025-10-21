@@ -47,7 +47,7 @@ Groth16[^9] is one example of SNARK requiring such a setup.
 In the context of digital identity, and in particular in Switzerland, we assume the party generating the CRS to be the state. In that instance, the CRS generator coincides with the credential issuer, a party that can issue forgeries anyway.
 As such, we chose to retain systems that require a public setup in our comparison.
 
-Note: alternatively, this setup can take place using MPC, in our context this hardly solves the governance issue.
+Note: alternatively, this setup can take place using MPC, in our context this hardly solves the governance issue. [Scalable Multi-party Computation for zk-SNARK Parameters in the Random Beacon Model](https://eprint.iacr.org/2017/1050.pdf) describes such an approach.
 
 ### A note on prover's scalability
 
