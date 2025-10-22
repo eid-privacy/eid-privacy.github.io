@@ -18,7 +18,7 @@ Here's the table used to summarize the comparison at page 10 of the STARK paper:
 
 ![Comparison of ZK systems by the authors of zk-STARK](/assets/images/zkstark-snarks-mpc-comparison.png "Comparison of ZK systems by the authors of zk-STARK")
 
-### Requirements for digital identity systems
+## Requirements for digital identity systems
 
 When thinking about digital identity, the most interesting ZK constructs are:
 - easy on the prover's resources – when designing for people's identity, the provers in ZK interactions are more often than not consumer hardware. It must be quick to prove something in a ZK system
@@ -29,7 +29,7 @@ With regard to post-quantum security, the answer is not clear-cut:
 Ideally we want the system to be post-quantum safe.
 Realistically, digital identity systems currently use ECDSA to sign credentials, which is not post-quantum safe. Thus, we consider post-quantum-safety a nice-to-have but not mandatory.
 
-### To "public setup" or not
+## To "public setup" or not
 
 While a transparent system is ideal to avoid additional trusted parties or ceremonies, we must discuss what public setup means for digital identity.
 
@@ -49,7 +49,7 @@ As such, we chose to retain systems that require a public setup in our compariso
 
 Note: alternatively, this setup can take place using MPC, in our context this hardly solves the governance issue. [Scalable Multi-party Computation for zk-SNARK Parameters in the Random Beacon Model](https://eprint.iacr.org/2017/1050.pdf) describes such an approach.
 
-### A note on prover's scalability
+## A note on prover's scalability
 
 It is to be noted that just because *prover scalability* has a green *yes* in a table does not imply it is practically feasible to use such a system for zero-knowledge presentation of ECDSA signed credentials.
 This has to do with the fact that in most public sector digital identity proposals, credentials are required to be signed by the holder using ECDSA.
@@ -59,7 +59,7 @@ Some publications use clever constructions to make these computations more effic
 
 # Breakdown of the categories
 
-### hPKC - homomorphic Public Key Encryption
+## hPKC - homomorphic Public Key Encryption
 
 In his paper from 2016, Jens Groth mentions
 > While pairing-based SNARGs are efficient for the verifier, the computational overhead for the prover is still orders of magnitude too high to warrant use in outsourced computation.
@@ -68,7 +68,7 @@ Today it looks like Groth16[^9] is still one of the best general-purpose SNARKs 
 Plonk[^10] authors evaluate their system as slightly slower (notably for the prover) but it does not require a per-circuit public setup.
 Clearly, the universality of the circuits themselves is a big factor in choosing a scheme.
 
-### DLP - Discrete Logarithm Problem
+## DLP - Discrete Logarithm Problem
 
 Systems relying on DLP are not post-quantum safe as Shor's quantum factoring algorithm can solve DLP efficiently.
 Except for this, systems like Bulletproofs[^5] are attractive to build modular proofs with arbitrary computations.
@@ -77,28 +77,28 @@ But proving knowledge of a SHA256 pre-image is measured at around 19.5 seconds, 
 
 Another strong proposition relying on DLP is one of the implementations of Spartan[^11] appropriately dubbed SpartanDL.
 
-### IP - Interactive Proof based
+## IP - Interactive Proof based
 
 Recent work such as Hyrax[^6] proposes ZK-IP protocols.
 Their benchmarks of Hyrax show Ligero[^7] (see MPC paragraph) to be faster for the plotted values.
-libSTARK is also high up in prover's time. 
+libSTARK is also high up in prover's time.
 
 ![Hyrax benchmarks](/assets/images/hyrax-benchmark.png "Hyrax benchmarks")
 ![Hyrax benchmark legend](/assets/images/hyrax-benchmark-legend.png "Hyrax benchmark legend")
 
 The figures are from Hyrax[^6], section 8.1 "Comparison with prior work".
-### MPC - Secure multi-party Computation
+## MPC - Secure multi-party Computation
 
 Also called "MPC-in-the-head", this model builds ZK-PCP proofs based on secure MPC protocols.
 The most relevant for us here are Ligero, an efficient construction for cryptography-related provers.
 The Longfellow-zk paper from Google uses it as one of the bases and combines it with sumcheck along with some optimizations to create a proof system that the authors estimate 20x faster than Ligero itself[^8].
 
-### IVC+hPKC - Incrementally Verifiable Computation
+## IVC+hPKC - Incrementally Verifiable Computation
 
 This is mostly a technique (as exposed by the authors of STARK) that, applied on top of an hPKC construction, is used to save prover space.
 We will return to these if this proves necessary with constructions that are prover-time efficient.
 
-### ZK-STARK
+## ZK-STARK
 
 As all feature comparisons require, ZK-STARK ticks all the boxes in the table.
 There are caveats however, one of which is formulated by Matteo Frigo and Abhi Shelat in their work on Longfellow[^8]:
@@ -117,7 +117,7 @@ Ligero's authors make the same statement:
 The following two publications focus on delivering zero-knowledge presentation of existing credentials.
 That is, one of the primary goals of the authors is to leave existing digital identity infrastructure untouched (i.e.: no change to issuer's signatures, credential formats) and still enable proving statements about issued credentials in zero-knowledge interactions.
 
-### Google's Longfellow-zk (2024)
+## Google's Longfellow-zk (2024)
 
 As mentioned in the MPC paragraph, Longfellow combines Ligero and Sumcheck in an efficient zero-knowledge proof protocol relying on the same assumptions as Ligero (existence of secure hash functions) and achieving around twenty times the performance.
 Notably, the authors use their system, along with highly efficient circuit construction, to present mDoc credentials in zero-knowledge interactions taking less than a second on (high-end) consumer phones.
@@ -125,7 +125,7 @@ Notably, the authors use their system, along with highly efficient circuit const
 This construction is complete and implemented.
 The ease or difficulty of adapting it to other credential formats remains to be evaluated.
 
-### Microsoft's Crescent (2025)
+## Microsoft's Crescent (2025)
 
 Microsoft Research and UC Berkeley published a ZK system for existing credentials named "Crescent".
 It is notable because it starts from the same premise as Longfellow (building on top of existing credential and signature schemes), but proceeds very differently.
