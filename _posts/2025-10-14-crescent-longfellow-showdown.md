@@ -13,13 +13,31 @@ categories: wp0
 - Question: revocation proofs, range proofs, ...
 # Crescent breakdown
 - threat model and security assumptions
-- general construction
+	- Groth16 relies on knowledge of exponents and q-power diffie hellman, two non-standard but falsifiable assumptions
+	- Groth16 requires a trusted public setup, meaning some governance and computational overhead to deploy in a meaningful infrastructure
+	- Groth16 also requires bilinear pairings
+	- Spartan can be instantiated for different models, Crescent uses it with Tom-256 and relies on Spartan's Discrete Logarithm hardness variant.
+- general construction of the scheme is modular
+	- Groth16 (and thus R1CS - QAPs) -> outputs Pedersen commitments,
+	- Commitments are used for selective disclosure but also as proof-correlator when proving holder binding
+	- Holder binding uses different SNARK: Spartan (also R1CS) with ZKAttest's TOM-256
+	- The authors make use of re-randomization to obtain fresh (and unlinkable) proofs for every presentation despite the pre-computing
+- Big takeaways
+	- Pre-computing is the only way to make this usable
+	- Use of Spartan only for a sub-part suggests that using it for the whole is to expensive
+	- A lot of circuit cost comes down to parsing credentials (as for Longfellow)
 # Longfellow breakdown
 - threat model and security assumptions
+	- Threat model is inherited from the setting in which it's going to be used as the construction does not require any public setup
+	- Cryptographic assumptions: Longfellow works in the [Random Oracle Model](https://en.wikipedia.org/wiki/Random_oracle) ("Assume the existence of collision-resistant hash-functions." - Ligero paper - theorem 1.1)
 - general construction
+	- Builds a combination of Ligero and Sumcheck to efficiently proof NP statements using a specific form of polynomials
+	- Lots of local optimisations (in and out of the circuits)
+	- Credential format is again the highest-cost for the prover's generation of a proof.
+	- Build with [[whatever expressions]] (describe their "quad terms" and how they relate to QAP and R1CS) See Spartan paper page 13 ("Encode R1CS instance as sum-check instances") + Page 16 section 4 for some hints. Or maybe do not describe it, too in-depth for this article.
 # Comparison
 * Composability
-* benchmarks
+* benchmarks (this one we can just pull from each of the papers but be careful about the specs of the prover's machine)
 - implementations
 # Suitability for Swiyu
 Both Longfellow and Cresent provide a complete Anonymous Identity solution.  
@@ -79,7 +97,7 @@ migrating from mDL/CBOR to SD-JWT or any other JSON-based credential format diff
 However, longfellow's current effort to support JWT is promising, and could be used in Swiyu.
 We see that is the existing JWT circuits maintained in the [code](https://github.com/google/longfellow-zk/tree/main/lib/circuits/jwt). However, it's still work in progress as stated in the [review by dyne](https://news.dyne.org/longfellow-zero-knowledge-google-zk/).
 
-## Crescent 
+## Crescent (@chumbert ? I can take care of this and expand on the breakdown)
 The Microsoft Crescent solution sacrifies performance to provide support for both mDL and JWT. 
 The library they offer also provides more user-friendly intructions for running the library quickly, and easily intergrate it.
 
