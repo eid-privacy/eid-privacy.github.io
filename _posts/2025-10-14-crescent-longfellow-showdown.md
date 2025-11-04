@@ -18,7 +18,7 @@ categories: wp0
 Crescent is build in a modular way using Groth16[^groth16], sigma-proofs[^sigma-proofs],
 and Spartan[^spartan] a construction also authored by Srinath Setty at Microsoft Research.
 The paper focuses on presenting SD-JWT[^sd-jwt] credentials and publishes performance 
-benchmarks to present SD-JWTs with and without discloures, with and without holder binding, as well as the presentation of an mDoc[^mdoc] (without disclosures or holder binding).
+benchmarks to present SD-JWTs with and without discloures, with and without holder binding, as well as the presentation of an mDL[^mdl] (without disclosures or holder binding).
 
 ## Security assumptions
 
@@ -46,30 +46,52 @@ Groth16 proof is re-randomized for each presentation.
 
 Each attribute can be either hidden, committed to, or revealed during a presentation.
 The holder uses Pedersen commitments[^pedersen] to commit to attributes.
-The validity of the credential and the disclosed and committed attributes are then tied
-together with a sigma-proof.
+The validity of the credential and the disclosed and committed 
+attributes are then tied together with a sigma-proof.
 
 ## Linking proof
 
+When holder binding is a requirement, the prover needs to proof it is 
+able to produce a signature with the private key matching the public key
+embedded in the presented credential. This, again, needs to be fresh for each presentation to prevent linkability.
 
-
-As a last step of presentation, the holder
-- general construction of the scheme is modular
-	- Groth16 (and thus R1CS - QAPs) -> outputs Pedersen commitments,
-	- Commitments are used for selective disclosure but also as proof-correlator when proving holder binding
-	- Holder binding uses different SNARK: Spartan (also R1CS) with ZKAttest's TOM-256
-	- The authors make use of re-randomization to obtain fresh (and unlinkable) proofs for every presentation despite the pre-computing
-- public code
-  - Proof of Concept available, but no maintenance so far (October 2025)
-  - Using the Pedersen Commitments allows for flexible use-cases
-  - LiGa: what can we say wrt how they build the circuit?
-- Big takeaways
-	- Pre-computing is the only way to make this usable - holder needs to store 1GB and spend 20 seconds once for a new credential
-	- Use of Spartan only for a sub-part suggests that using it for the whole is too expensive
-	- A lot of circuit cost comes down to parsing credentials (as for Longfellow)
+To achieve this, the "linker" (author's terminology) rely on the fact 
+that the validity proof can output commitment to attributes.
+In particular, it uses a commitment to the public key of the holder.
+It then proves with a SNARK that it can sign a message such that the 
+committed public key correctly verifies the signature.
+The commitment to the public key is blinded using a random linear
+combination, and a sigma-proof proves the committed key is the
+one used for the verification algorithm in the SNARK.
 
 ![Block diagram of Crescent proof](/assets/crescent-overview-block.jpg "Block diagram of Crescent proof")
 _A block diagram of the components in a Crescent proof. On the left: the main proof of the credential validity. On the right: the linking proof, demonstrating that the holder knows the private key corresponding to the public key bound in the credential._
+
+## Available code
+
+The publication comes with a proof-of-concept public repository:
+[crescent-credentials repository](https://github.com/microsoft/crescent-credentials) (no maintenance as of November 2025).
+
+## Takeaways
+
+As in longfellow-zk, it seems like the parsing of the credential is the
+biggest cost to the prover.
+
+The pre-computation of the Groth16 proof seems to be the only way to
+make this construction usable.
+The pre-computation (performed only once per credential) costs:
+* 593 MB and 20s for an SD-JWT without holder binding or disclosure
+* 1.1GB and 140s for an mDL without holder binding or disclosure
+The benchmarks are reported as having been performed on an Intel Xeon
+W-2133 CPU @ 3.6 GHz -- a workstation CPU, not a consumer phone one.
+
+The fact that only the holder binding proof is performed using
+Spartan hints that, even with the Tom-256 curve, proving the
+validity of the credential with this construction would be too costly.
+
+
+LiGa: what can we say wrt how they build the circuit?
+ClHu: I can mention we can use R1CS, anything else you'd like to see appearing ?
 # Longfellow breakdown
 
 - threat model and security assumptions
