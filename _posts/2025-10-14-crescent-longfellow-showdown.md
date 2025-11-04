@@ -33,6 +33,8 @@ categories: wp0
 	- Use of Spartan only for a sub-part suggests that using it for the whole is too expensive
 	- A lot of circuit cost comes down to parsing credentials (as for Longfellow)
 
+![Block diagram of Crescent proof](/assets/crescent-overview-block.jpg "Block diagram of Crescent proof")
+_A block diagram of the components in a Crescent proof. On the left: the main proof of the credential validity. On the right: the linking proof, demonstrating that the holder knows the private key corresponding to the public key bound in the credential._
 # Longfellow breakdown
 
 - threat model and security assumptions
