@@ -11,14 +11,49 @@ categories: wp0
 	- No changes to existing infra
 - Mostly about Unlinkability and holder binding
 - Question: revocation proofs, range proofs, ...
+- Note; we use prover and holder interchangeably (or do we ? This is just to ease my mental load when writing)
 
 # Crescent breakdown
 
-- threat model and security assumptions
-	- Groth16 relies on knowledge of exponents and q-power Diffie Hellman, two non-standard but falsifiable assumptions
-	- Groth16 requires a trusted public setup, meaning some governance and computational overhead to deploy in a meaningful infrastructure
-	- Groth16 also requires bilinear pairings
-	- Spartan can be instantiated for different models, Crescent uses it with Tom-256 and relies on Spartan's Discrete Logarithm hardness variant.
+Crescent is build in a modular way using Groth16[^groth16], sigma-proofs[^sigma-proofs],
+and Spartan[^spartan] a construction also authored by Srinath Setty at Microsoft Research.
+The paper focuses on presenting SD-JWT[^sd-jwt] credentials and publishes performance 
+benchmarks to present SD-JWTs with and without discloures, with and without holder binding, as well as the presentation of an mDoc[^mdoc] (without disclosures or holder binding).
+
+## Security assumptions
+
+Groth16 requires a trusted public setup per-circuit and builds on bilinear pairings of elliptic curves.
+The security assumptions inherited from its construction are:
+* Knowledge of exponents,
+* and q-power Diffie-Hellman,
+two non-standard but falsifiable assumptions.
+
+Spartan can be instantiated for different models.
+Crescent uses the discrete logarithm variant, relying on the hardness of the DLP.
+The paper specifically instantiates Spartan for the Tom-256 curve[^zk-attest] to ensure good performance for the ECDSA verification algorithm.
+
+## Construction
+
+Here's a succinct-ish non-interactive explanation of knowledge (SNERK-ish) of the construction of Crescent.
+
+## Credential validity and attributes disclosure
+
+The validity of the credential is proven by the holder using Groth16 and a circuit that outputs the parsed attributes of the credential.
+Due to the time and memory cost incurred by the prover (more on that later), this step is
+pre-computed.
+To ensure the freshness of the proof, and therefore prevent linkability of the prover, the
+Groth16 proof is re-randomized for each presentation.
+
+Each attribute can be either hidden, committed to, or revealed during a presentation.
+The holder uses Pedersen commitments[^pedersen] to commit to attributes.
+The validity of the credential and the disclosed and committed attributes are then tied
+together with a sigma-proof.
+
+## Linking proof
+
+
+
+As a last step of presentation, the holder
 - general construction of the scheme is modular
 	- Groth16 (and thus R1CS - QAPs) -> outputs Pedersen commitments,
 	- Commitments are used for selective disclosure but also as proof-correlator when proving holder binding
