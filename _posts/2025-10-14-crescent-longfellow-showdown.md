@@ -16,7 +16,7 @@ categories: wp0
 # Crescent breakdown
 
 Crescent is build in a modular way using Groth16[^groth16], sigma-proofs[^sigma-proofs],
-and Spartan[^spartan] a construction also authored by Srinath Setty at Microsoft Research.
+and Spartan[^spartan] a construction authored by Srinath Setty also at Microsoft Research.
 The paper focuses on presenting SD-JWT[^sd-jwt] credentials and publishes performance 
 benchmarks to present SD-JWTs with and without discloures, with and without holder binding, as well as the presentation of an mDL[^mdl] (without disclosures or holder binding).
 
@@ -30,54 +30,61 @@ two non-standard but falsifiable assumptions.
 
 Spartan can be instantiated for different models.
 Crescent uses the discrete logarithm variant, relying on the hardness of the DLP.
-The paper specifically instantiates Spartan for the Tom-256 curve[^zk-attest] to ensure good performance for the ECDSA verification algorithm.
+The paper specifically instantiates Spartan[^spartan] for the Tom-256 curve[^zk-attest] to ensure good performance of the ECDSA verification algorithm.
 
 ## Construction
 
-Here's a succinct-ish non-interactive explanation of knowledge (SNERK-ish) of the construction of Crescent.
+At a very high level, presenting a credential in Crescent requires:
+* a pre-computation step that produces a Groth16[^groth16] proof (Section 3.2),
+* a `show` proof that re-randomizes the Groth16 proof, produces commitments to attributes if necessary and a sigma proof to tie them to the main Groth16 proof (Section 3.3)
+* an optional linking proof, if holder binding is required, that uses Spartan[^Spartan] with Tom-256[^zk-attest] to prove the ability of the holder to produce signatures that match the device key embedded in the shown credential (Section 3.4).
+
+![Block diagram of Crescent proof](/assets/crescent-overview-block.jpg "Block diagram of Crescent proof")
+_A block diagram of the components in a Crescent proof. On the left: the main proof of the credential validity. On the right: the linking proof, demonstrating that the holder knows the private key corresponding to the public key bound in the credential._
 
 ## Credential validity and attributes disclosure
 
 The validity of the credential is proven by the holder using Groth16 and a circuit that outputs the parsed attributes of the credential.
-Due to the time and memory cost incurred by the prover (more on that later), this step is
-pre-computed.
-To ensure the freshness of the proof, and therefore prevent linkability of the prover, the
-Groth16 proof is re-randomized for each presentation.
+Due to the time and memory cost incurred by the prover (more on that later), this step is pre-computed (Section 3.2).
+To ensure the freshness of the proof, and therefore prevent linkability of the prover, the Groth16 proof is re-randomized for each presentation.
+(Section 3.3, Step 2 of "Show")
 
 Each attribute can be either hidden, committed to, or revealed during a presentation.
-The holder uses Pedersen commitments[^pedersen] to commit to attributes.
+The holder uses Pedersen commitments[^pedersen] to commit to attributes. (Section 3.3, Step 3 of "Show")
 The validity of the credential and the disclosed and committed 
-attributes are then tied together with a sigma-proof.
+attributes are then tied together with a sigma-proof. 
+(Section 3.3, Step 4 of "Show")
 
 ## Linking proof
 
-When holder binding is a requirement, the prover needs to proof it is 
+When holder binding is a requirement, the holder needs to prove it is 
 able to produce a signature with the private key matching the public key
-embedded in the presented credential. This, again, needs to be fresh for each presentation to prevent linkability.
+embedded in the presented credential. This, again, needs to be fresh for each presentation to prevent linkability. (Section 3.4)
 
 To achieve this, the "linker" (author's terminology) rely on the fact 
 that the validity proof can output commitment to attributes.
 In particular, it uses a commitment to the public key of the holder.
 It then proves with a SNARK that it can sign a message such that the 
-committed public key correctly verifies the signature.
+committed public key correctly verifies the signature. (Section 3.4.1, Step 5 of the linking proof)
 The commitment to the public key is blinded using a random linear
 combination, and a sigma-proof proves the committed key is the
-one used for the verification algorithm in the SNARK.
-
-![Block diagram of Crescent proof](/assets/crescent-overview-block.jpg "Block diagram of Crescent proof")
-_A block diagram of the components in a Crescent proof. On the left: the main proof of the credential validity. On the right: the linking proof, demonstrating that the holder knows the private key corresponding to the public key bound in the credential._
+one used for the verification algorithm in the SNARK. (Section 3.4.1, Step 3 and 4 of linking proof)
+The linker uses Spartan[^spartan] with Tom-256, a SNARK that does not require a public setup. (Section 3.4.1, "ECDSA Signature Proof")
 
 ## Available code
 
 The publication comes with a proof-of-concept public repository:
 [crescent-credentials repository](https://github.com/microsoft/crescent-credentials) (no maintenance as of November 2025).
 
+Most of the code is written in Rust.
+Circuits are written using circom.
+
 ## Takeaways
 
-As in longfellow-zk, it seems like the parsing of the credential is the
-biggest cost to the prover.
+As in longfellow-zk, the parsing of the credential is the
+largest cost to the prover.
 
-The pre-computation of the Groth16 proof seems to be the only way to
+The pre-computation of the Groth16 proof is the only way to
 make this construction usable.
 The pre-computation (performed only once per credential) costs:
 * 593 MB and 20s for an SD-JWT without holder binding or disclosure
@@ -89,9 +96,6 @@ The fact that only the holder binding proof is performed using
 Spartan hints that, even with the Tom-256 curve, proving the
 validity of the credential with this construction would be too costly.
 
-
-LiGa: what can we say wrt how they build the circuit?
-ClHu: I can mention we can use R1CS, anything else you'd like to see appearing ?
 # Longfellow breakdown
 
 - threat model and security assumptions
