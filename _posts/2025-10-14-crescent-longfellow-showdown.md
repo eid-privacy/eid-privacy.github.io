@@ -39,7 +39,7 @@ At a very high level, presenting a credential in Crescent requires:
 * a `show` proof that re-randomizes the Groth16 proof, produces commitments to attributes if necessary and a sigma proof to tie them to the main Groth16 proof (Section 3.3)
 * an optional linking proof, if holder binding is required, that uses Spartan[^Spartan] with Tom-256[^zk-attest] to prove the ability of the holder to produce signatures that match the device key embedded in the shown credential (Section 3.4).
 
-![Block diagram of Crescent proof](/assets/crescent-overview-block.jpg "Block diagram of Crescent proof")
+![Block diagram of Crescent proof](crescent-overview-block.jpg "Block diagram of Crescent proof")
 _A block diagram of the components in a Crescent proof. On the left: the main proof of the credential validity. On the right: the linking proof, demonstrating that the holder knows the private key corresponding to the public key bound in the credential._
 
 ## Credential validity and attributes disclosure
@@ -98,23 +98,52 @@ validity of the credential with this construction would be too costly.
 
 # Longfellow breakdown
 
-- threat model and security assumptions
-	- Threat model is inherited from the setting in which it's going to be used as the construction does not require any public setup
-	- Cryptographic assumptions: Longfellow works in the [Random Oracle Model](https://en.wikipedia.org/wiki/Random_oracle) ("Assume the existence of collision-resistant hash-functions." - Ligero paper - theorem 1.1)
+TODO: Bird's eye view
+## Security assumptions
+
+Longfellow's proposal builds on a combination of Sumcheck[^sumcheck] and Ligero[^ligero]. As such, it relies on the [Random Oracle Model](https://en.wikipedia.org/wiki/Random_oracle) and does not require a public setup. As a reminder, the assumption made by the Random Oracle Model is the existence of collision-resistant hash functions (Theorem 1.1 in Ligero's paper[^ligero]).
+
+## Construction
+
+Instead of relying on a SNARK construction, Longfellow uses Ligero
+to prove the correctness of execution of a protocol that proves
+C(x) = 0 for public circuit C, public input x,
+and private (prover) input w.
+
+Ligero is not used to prove C(x) = 0 directly as the computation is
+large and performing
+[NTT](https://en.wikipedia.org/wiki/Discrete_Fourier_transform_over_a_ring#Number-theoretic_transform) 
+on such a large matrix would result in prohibitive proof generation
+time for the prover.
+
+Instead, a variant of Sumcheck is designed and used for the prover
+to commit to an accepting transcript t and Ligero is used to prove that
+this committed transcript t' corresponds to t and that t is indeed a
+proof that C(x) = 0.
+
+As |t| < |C|, this results in much better performance. Section 5.2.1, page 37 describes the result of benchmarks for SHA-256 as "roughly 20x faster" than a Ligero instance.
+![Longfellow-zk high-level structure](/assets/images/longfellow-vs-crescent/longfellow-structure.jpg)
+_High-level overview of Longfellow-zk proof mechanism (described in the original paper, section 2)._
+
+
+
+
 - general construction
-	- Builds a combination of Ligero and Sumcheck to efficiently proof NP statements using a specific form of polynomials
 	- Lots of local optimisations (in and out of the circuits)
 	- Credential format is again the highest-cost for the prover's generation of a proof.
 	- Build with [[whatever expressions]] (describe their "quad terms" and how they relate to QAP and R1CS) See Spartan paper page 13 ("Encode R1CS instance as sum-check instances") + Page 16 section 4 for some hints. Or maybe do not describe it, too in-depth for this article.
+## Available code
 - public code
   - As of October 2025, the code is still in development and documentation is improved
-  - A security review by Trailsofbits is available and problems have been corrected
+  - [A security review by Trailsofbits](https://github.com/google/longfellow-zk/blob/main/docs/static/reviews/Longfellow_report_2025_08_18.pdf) is available and problems have been corrected
   - The circuit optimizations are opaque and difficult to change
-- Big takeaways
+
+## Takeaways
+
   - Very optimized proof generation, showing the applicability of current ZKP systems also to eID
   - Current version difficult to extend for other use-cases and other credential formats
 
-# Comparison
+# Comparison of Longfellow and Crescent
 
 * Composability (LiGa: does that include possibility to extend for other use-cases and credential formats?)
 * benchmarks (this one we can just pull from each of the papers but be careful about the specs of the prover's machine and what they're actually doing)
