@@ -98,12 +98,25 @@ validity of the credential with this construction would be too costly.
 
 # Longfellow breakdown
 
-TODO: Bird's eye view
+In November 2024, Matteo Frigo and Abhi Shelat publish "Anonymous Credentials from ECDSA"[^longfellow].
+The paper describes a construction used for zero-knowledge
+presentations of mDoc with extremely good times:
+1.17s for the prover, 0.68s for the verifier on a Pixel 6 phone.
+In 2025, Google releases a public repository with [Longfellow-zk's code](https://github.com/google/longfellow-zk).
+
+The Longfellow-zk construction does not require any public setup or
+pre-computation from either parties.
 ## Security assumptions
 
-Longfellow's proposal builds on a combination of Sumcheck[^sumcheck] and Ligero[^ligero]. As such, it relies on the [Random Oracle Model](https://en.wikipedia.org/wiki/Random_oracle) and does not require a public setup. As a reminder, the assumption made by the Random Oracle Model is the existence of collision-resistant hash functions (Theorem 1.1 in Ligero's paper[^ligero]).
+Longfellow's proposal builds on a combination of Sumcheck[^sumcheck] and Ligero[^ligero].
+As such, it relies on the [Random Oracle Model](https://en.wikipedia.org/wiki/Random_oracle) and does not require a public setup.
+As a reminder, the assumption made by the Random Oracle Model is the
+existence of collision-resistant hash functions (Theorem 1.1 in Ligero's paper[^ligero]).
 
 ## Construction
+
+![Longfellow-zk high-level structure](/assets/images/longfellow-vs-crescent/longfellow-structure.jpg)
+_High-level overview of Longfellow-zk proof mechanism (described in the original paper, section 2)._
 
 Instead of relying on a SNARK construction, Longfellow uses Ligero
 to prove the correctness of execution of a protocol that proves
@@ -122,26 +135,24 @@ this committed transcript t' corresponds to t and that t is indeed a
 proof that C(x) = 0.
 
 As |t| < |C|, this results in much better performance. Section 5.2.1, page 37 describes the result of benchmarks for SHA-256 as "roughly 20x faster" than a Ligero instance.
-![Longfellow-zk high-level structure](/assets/images/longfellow-vs-crescent/longfellow-structure.jpg)
-_High-level overview of Longfellow-zk proof mechanism (described in the original paper, section 2)._
 
-
-
-
-- general construction
-	- Lots of local optimisations (in and out of the circuits)
-	- Credential format is again the highest-cost for the prover's generation of a proof.
-	- Build with [[whatever expressions]] (describe their "quad terms" and how they relate to QAP and R1CS) See Spartan paper page 13 ("Encode R1CS instance as sum-check instances") + Page 16 section 4 for some hints. Or maybe do not describe it, too in-depth for this article.
 ## Available code
-- public code
-  - As of October 2025, the code is still in development and documentation is improved
-  - [A security review by Trailsofbits](https://github.com/google/longfellow-zk/blob/main/docs/static/reviews/Longfellow_report_2025_08_18.pdf) is available and problems have been corrected
-  - The circuit optimizations are opaque and difficult to change
 
+[Longfellow-zk repository](https://github.com/google/longfellow-zk) hosts an implementation of the proof system
+along with circuits and benchmarks. 
+[A security review by Trailsofbits](https://github.com/google/longfellow-zk/blob/main/docs/static/reviews/Longfellow_report_2025_08_18.pdf) is available and high severity issues
+have been corrected.
 ## Takeaways
 
-  - Very optimized proof generation, showing the applicability of current ZKP systems also to eID
-  - Current version difficult to extend for other use-cases and other credential formats
+Longfellow relies on a "simple" construction backed by less-accessible
+optimizations of the proving system and the circuits construction.
+For an mDoc credential, prover time clocks in at 1.17s, while verification takes 0.68s on a Pixel 6 Pro phone (Section 6.2).
+This is achieved without any pre-computation, nor public setup.
+Unfortunately, the current open-source toolchain does not provide an
+easy way to write new circuits for other credential format or proof
+requests.
+Section 6.2 also explains that the largest portion of the computation
+cost is due to the credential format itself.
 
 # Comparison of Longfellow and Crescent
 
