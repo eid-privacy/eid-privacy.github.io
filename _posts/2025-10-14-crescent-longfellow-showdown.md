@@ -15,7 +15,7 @@ categories: wp0
 
 # Crescent breakdown
 
-Crescent is build in a modular way using Groth16[^groth16], sigma-proofs[^sigma-proofs],
+Crescent[^crescent] is built in a modular way using Groth16[^groth16], sigma-proofs[^sigma-proofs],
 and Spartan[^spartan] a construction authored by Srinath Setty also at Microsoft Research.
 The paper focuses on presenting SD-JWT[^sd-jwt] credentials and publishes performance 
 benchmarks to present SD-JWTs with and without discloures, with and without holder binding, as well as the presentation of an mDL[^mdl] (without disclosures or holder binding).
@@ -37,7 +37,7 @@ The paper specifically instantiates Spartan[^spartan] for the Tom-256 curve[^zk-
 At a very high level, presenting a credential in Crescent requires:
 * a pre-computation step that produces a Groth16[^groth16] proof (Section 3.2),
 * a `show` proof that re-randomizes the Groth16 proof, produces commitments to attributes if necessary and a sigma proof to tie them to the main Groth16 proof (Section 3.3)
-* an optional linking proof, if holder binding is required, that uses Spartan[^Spartan] with Tom-256[^zk-attest] to prove the ability of the holder to produce signatures that match the device key embedded in the shown credential (Section 3.4).
+* an optional linking proof, if holder binding is required, that uses Spartan[^spartan] with Tom-256[^zk-attest] to prove the ability of the holder to produce signatures that match the device key embedded in the shown credential (Section 3.4).
 
 ![Block diagram of Crescent proof](crescent-overview-block.jpg "Block diagram of Crescent proof")
 _A block diagram of the components in a Crescent proof. On the left: the main proof of the credential validity. On the right: the linking proof, demonstrating that the holder knows the private key corresponding to the public key bound in the credential._
@@ -81,7 +81,7 @@ Circuits are written using circom.
 
 ## Takeaways
 
-As in longfellow-zk, the parsing of the credential is the
+As in longfellow-zk[^longfellow], the parsing of the credential is the
 largest cost to the prover.
 
 The pre-computation of the Groth16 proof is the only way to
@@ -248,6 +248,17 @@ An E-ID system using Crescent will need to decide how to implement this trusted 
 - A prioris:
 	- Linus: is longfellow flexible and composable enough to solve other problems than just SD and holder binding? E.g., can we put it as a module in docknetwork?
 	- Clement: would like to use Longfellow, but it's haaaard (specific form for arithmetization, composed ligero+sumcheck is not trivial, tons of very technical optimizations). Otherwise "universal" in applicability and very performant, post-quantum safe.
+		- Update: okay arithmetization might be doable if I follow the course properly. Implementation still too opaque.
 	- Ahmed:
 
 # References
+
+[^crescent]: Crescent - [https://eprint.iacr.org/2024/2013](https://eprint.iacr.org/2024/2013)
+[^zk-attest]: ZKAttest - [https://eprint.iacr.org/2021/1183](https://eprint.iacr.org/2021/1183)
+[^spartan]: Spartan - [https://eprint.iacr.org/2019/550](https://eprint.iacr.org/2019/550)
+[^ligero]: Ligero - [https://eprint.iacr.org/2022/1608](https://eprint.iacr.org/2022/1608)
+[^longfellow]: Anonymous credentials from ECDSA: [https://eprint.iacr.org/2024/2010](https://eprint.iacr.org/2024/2010), see also longfellow-zk: [https://github.com/google/longfellow-zk](https://github.com/google/longfellow-zk)
+[^groth16]:  Groth16 - [https://eprint.iacr.org/2016/260](https://eprint.iacr.org/2016/260)
+[^sigma-proof]: Sigma protocols - https://en.wikipedia.org/wiki/Proof_of_knowledge#Sigma_protocols
+[^sd-jwt]: SD-JWT - https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/
+[^sumcheck]: https://dl.acm.org/doi/10.1145/146585.146605
