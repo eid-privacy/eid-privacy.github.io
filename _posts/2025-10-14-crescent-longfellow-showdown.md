@@ -262,3 +262,4 @@ An E-ID system using Crescent will need to decide how to implement this trusted 
 [^sigma-proof]: Sigma protocols - https://en.wikipedia.org/wiki/Proof_of_knowledge#Sigma_protocols
 [^sd-jwt]: SD-JWT - https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/
 [^sumcheck]: https://dl.acm.org/doi/10.1145/146585.146605
+[^mdl]: - https://www.iso.org/standard/69084.html or https://en.wikipedia.org/wiki/Mobile_driver%27s_license
