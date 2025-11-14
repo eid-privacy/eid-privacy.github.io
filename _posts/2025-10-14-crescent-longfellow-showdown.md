@@ -17,7 +17,7 @@ categories: wp0
 
 Crescent[^crescent] is built in a modular way using Groth16[^groth16], sigma-proofs[^sigma-proofs],
 and Spartan[^spartan] a construction authored by Srinath Setty also at Microsoft Research.
-The paper focuses on presenting SD-JWT[^sd-jwt] credentials and publishes performance 
+The paper focuses on presenting SD-JWT[^sd-jwt] credentials and publishes performance
 benchmarks to present SD-JWTs with and without discloures, with and without holder binding, as well as the presentation of an mDL[^mdl] (without disclosures or holder binding).
 
 ## Security assumptions
@@ -51,20 +51,20 @@ To ensure the freshness of the proof, and therefore prevent linkability of the p
 
 Each attribute can be either hidden, committed to, or revealed during a presentation.
 The holder uses Pedersen commitments[^pedersen] to commit to attributes. (Section 3.3, Step 3 of "Show")
-The validity of the credential and the disclosed and committed 
-attributes are then tied together with a sigma-proof. 
+The validity of the credential and the disclosed and committed
+attributes are then tied together with a sigma-proof.
 (Section 3.3, Step 4 of "Show")
 
 ## Linking proof
 
-When holder binding is a requirement, the holder needs to prove it is 
+When holder binding is a requirement, the holder needs to prove it is
 able to produce a signature with the private key matching the public key
 embedded in the presented credential. This, again, needs to be fresh for each presentation to prevent linkability. (Section 3.4)
 
-To achieve this, the "linker" (author's terminology) rely on the fact 
+To achieve this, the "linker" (author's terminology) rely on the fact
 that the validity proof can output commitment to attributes.
 In particular, it uses a commitment to the public key of the holder.
-It then proves with a SNARK that it can sign a message such that the 
+It then proves with a SNARK that it can sign a message such that the
 committed public key correctly verifies the signature. (Section 3.4.1, Step 5 of the linking proof)
 The commitment to the public key is blinded using a random linear
 combination, and a sigma-proof proves the committed key is the
@@ -106,6 +106,7 @@ In 2025, Google releases a public repository with [Longfellow-zk's code](https:/
 
 The Longfellow-zk construction does not require any public setup or
 pre-computation from either parties.
+
 ## Security assumptions
 
 Longfellow's proposal builds on a combination of Sumcheck[^sumcheck] and Ligero[^ligero].
@@ -125,7 +126,7 @@ and private (prover) input w.
 
 Ligero is not used to prove C(x) = 0 directly as the computation is
 large and performing
-[NTT](https://en.wikipedia.org/wiki/Discrete_Fourier_transform_over_a_ring#Number-theoretic_transform) 
+[NTT](https://en.wikipedia.org/wiki/Discrete_Fourier_transform_over_a_ring#Number-theoretic_transform)
 on such a large matrix would result in prohibitive proof generation
 time for the prover.
 
@@ -139,9 +140,10 @@ As |t| < |C|, this results in much better performance. Section 5.2.1, page 37 de
 ## Available code
 
 [Longfellow-zk repository](https://github.com/google/longfellow-zk) hosts an implementation of the proof system
-along with circuits and benchmarks. 
+along with circuits and benchmarks.
 [A security review by Trailsofbits](https://github.com/google/longfellow-zk/blob/main/docs/static/reviews/Longfellow_report_2025_08_18.pdf) is available and high severity issues
 have been corrected.
+
 ## Takeaways
 
 Longfellow relies on a "simple" construction backed by less-accessible
@@ -182,7 +184,7 @@ Along with the specific needs for Swiyu, one of these two solutions might be mor
 The Swiyu features that are relevant here are:
 - Credential format: Swiyu uses SD-JWT VC
 - Holder-binding: Swiyu requires holder binding with ECDSA (compatible with existing TEEs)
-- Revocation: Currently, Swiyu have a status list implementation for revocation
+- Revocation: Currently, Swiyu has a status list implementation for revocation
 - Visual presentation: Swiyu uses OCA (LiGa: is this relevant for Longfellow/Crescent?)
 - Communication protocols: Are these technologies compatible with OID4VCI / OID4VP which Swiyu uses?
 - Identifier usage: Swiyu uses DID:webvh
@@ -196,14 +198,14 @@ credential format along with standard ECDSA as it's chosen signature for both th
       The ISO mDL format was picked as it's one of the most used formats in the USA, and it's also mandated in the EUDI specification in Europe.
   However, the choice of mDL is not critical to the rest of the work, and should be possible to replace with another credential format.
 - Communication Protocols:
-      The OID4VC protocols -in fact- work well with both SD-JWT and the ISO mDL formats [as outlined in the SD-JWT spec](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html#name-iso-mdl).
+      The OID4VC protocols work well with both SD-JWT and the ISO mDL formats [as outlined in the SD-JWT spec](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html#name-iso-mdl).
 - Holder Binding:
-      The long fellow paper indicates that the public key of the holder's wallet must be added to the mDL document, hence ensuring holder binding later.
+      The Longfellow paper indicates that the public key of the holder's wallet must be added to the mDL document, hence ensuring holder binding later.
 - Revocation:
-       Swiyu uses Token Status Lists which was designed to work with both mDL and CBOR, so Longfellow would work seamlessly here as well.
+       Swiyu uses Token Status Lists which was designed to work with the CBOR encoding used in mDL, so Longfellow would work seamlessly here as well.
     reference: https://swiyu-admin-ch.github.io/technology-stack/#credential-revocation--token-status-list
 - Identifier usage:
-	Longfellow functionality requires access to the cryptographic key pairs of the actors using it (as expected). However, it doesn't require any specific standard for the format of the identity of the issuer or holder.
+	Longfellow functionality requires access to the public key of the actors using it (as expected). However, it doesn't require any specific standard for the format of the identity of the issuer or holder.
 	Therefore, the choice of identifiers is not relevant as long as the identifier mechanism is able to provide the keys to the longfellow library when needed.
 
 Migrating from mDL to SD-JWT:
