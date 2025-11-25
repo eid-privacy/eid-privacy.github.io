@@ -39,7 +39,7 @@ At a very high level, presenting a credential in Crescent requires:
 * a `show` proof that re-randomizes the Groth16 proof, produces commitments to attributes if necessary and a sigma proof to tie them to the main Groth16 proof (Section 3.3)
 * an optional linking proof, if holder binding is required, that uses Spartan[^spartan] with Tom-256[^zk-attest] to prove the ability of the holder to produce signatures that match the device key embedded in the shown credential (Section 3.4).
 
-![Block diagram of Crescent proof](crescent-overview-block.jpg "Block diagram of Crescent proof")
+![Block diagram of Crescent proof](/assets/images/longfellow-vs-crescent/crescent-overview-block.jpg "Block diagram of Crescent proof")
 _A block diagram of the components in a Crescent proof. On the left: the main proof of the credential validity. On the right: the linking proof, demonstrating that the holder knows the private key corresponding to the public key bound in the credential._
 
 ## Credential validity and attributes disclosure
@@ -116,7 +116,7 @@ existence of collision-resistant hash functions (Theorem 1.1 in Ligero's paper[^
 
 ## Construction
 
-![Longfellow-zk high-level structure](longfellow-structure.jpg)
+![Longfellow-zk high-level structure](/assets/images/longfellow-vs-crescent/longfellow-structure.jpg)
 _High-level overview of Longfellow-zk proof mechanism (described in the original paper, section 2)._
 
 Instead of relying on a SNARK construction, Longfellow uses Ligero
