@@ -12,10 +12,10 @@ author: Clément Humbert, Linus Gasser, and Ahmed Elghareeb
 With the introduction of more and more governmental electronic identities (e-ID) in the EU and Switzerland, the question of privacy becomes ever more important.
 We wrote an Overview of Privacy and Unlinkability[^overview] where we give a list of the most important elements to consider with regards to this topic.
 In this blog post we look at the *Zero Knowledge Proof* as mitigation for a majority of attacks described in the Overview post.
-We specifically concentrate on two papers being published in 2025, which both take into account the following constraints:
+We specifically focus on two papers published in 2025, which both take into account the following constraints:
 
 - Optimise the prover time: for e-ID system, the holder of the credential usually has a mobile phone with restricted computing capabilities
-- Include a ZKP of an ECDSA signature from a secp256k1 key: this is needed to proof the issuance. For holder binding, the signature must also be verified without disclosing the public key of the device.
+- Include a ZKP of an ECDSA signature from a secp256r1 key: this is needed to proof the issuance. For holder binding, the signature must also be verified without disclosing the public key of the device.
 - Work with existing credentials: use SD-JWT or mDoc as credentials, even though they are not optimized for ZKPs, contrary to BBS.
 
 The papers we present in this post are the following:
@@ -28,7 +28,7 @@ The papers we present in this post are the following:
 Crescent[^crescent] is built in a modular way using Groth16[^groth16], sigma-proofs[^sigma-proofs],
 and Spartan[^spartan] a construction authored by Srinath Setty also at Microsoft Research.
 The paper focuses on presenting SD-JWT[^sd-jwt] credentials and publishes performance
-benchmarks to present SD-JWTs with and without discloures, with and without holder binding, as well as the presentation of an mDL[^mdl] (without disclosures or holder binding).
+benchmarks to present SD-JWTs with and without disclosures, with and without holder binding, as well as the presentation of an mDL[^mdl] (without disclosures or holder binding).
 
 ## Security assumptions
 
