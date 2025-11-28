@@ -1,17 +1,27 @@
 ---
 layout: post
 title: Crescent and Longfellow
-date: 2025-10-14 16:49:18 +0200
+date: 2025-11-28 11:49:18 +0200
 categories: wp0
+math: "true"
+author: Clément Humbert, Linus Gasser, and Ahmed Elghareeb
 ---
-# Introduction (what are we comparing)
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+# Introduction 
 
-- e-ID
-- Time and context of longfellow and crescent (building on existing credentials)
-	- No changes to existing infra
-- Mostly about Unlinkability and holder binding
-- Question: revocation proofs, range proofs, ...
-- Note; we use prover and holder interchangeably (or do we ? This is just to ease my mental load when writing)
+With the introduction of more and more governmental electronic identities (e-ID) in the EU and Switzerland, the question of privacy becomes ever more important.
+We wrote an Overview of Privacy and Unlinkability[^overview] where we give a list of the most important elements to consider with regards to this topic.
+In this blog post we look at the *Zero Knowledge Proof* as mitigation for a majority of attacks described in the Overview post.
+We specifically concentrate on two papers being published in 2025, which both take into account the following constraints:
+
+- Optimise the prover time: for e-ID system, the holder of the credential usually has a mobile phone with restricted computing capabilities
+- Include a ZKP of an ECDSA signature from a secp256k1 key: this is needed to proof the issuance. For holder binding, the signature must also be verified without disclosing the public key of the device.
+- Work with existing credentials: use SD-JWT or mDoc as credentials, even though they are not optimized for ZKPs, contrary to BBS.
+
+The papers we present in this post are the following:
+
+* Crescent[^crescent], by Christian Paquin, Guru-Vamsi Policharla, and Greg Zaverucha - Microsoft
+* Longfellow[^longfellow], by Matteo Frigo and abhi shelat - Google
 
 # Crescent breakdown
 
@@ -74,7 +84,7 @@ The linker uses Spartan[^spartan] with Tom-256, a SNARK that does not require a 
 ## Available code
 
 The publication comes with a proof-of-concept public repository:
-[crescent-credentials repository](https://github.com/microsoft/crescent-credentials) (no maintenance as of November 2025).
+crescent-credentials repository[^crescent] (no maintenance as of November 2025).
 
 Most of the code is written in Rust.
 Circuits are written using circom.
@@ -87,8 +97,10 @@ largest cost to the prover.
 The pre-computation of the Groth16 proof is the only way to
 make this construction usable.
 The pre-computation (performed only once per credential) costs:
+
 * 593 MB and 20s for an SD-JWT without holder binding or disclosure
 * 1.1GB and 140s for an mDL without holder binding or disclosure
+
 The benchmarks are reported as having been performed on an Intel Xeon
 W-2133 CPU @ 3.6 GHz -- a workstation CPU, not a consumer phone one.
 
@@ -98,11 +110,11 @@ validity of the credential with this construction would be too costly.
 
 # Longfellow breakdown
 
-In November 2024, Matteo Frigo and Abhi Shelat publish "Anonymous Credentials from ECDSA"[^longfellow].
+In November 2024, Matteo Frigo and Abhi Shelat published "Anonymous Credentials from ECDSA"[^longfellow].
 The paper describes a construction used for zero-knowledge
 presentations of mDoc with extremely good times:
 1.17s for the prover, 0.68s for the verifier on a Pixel 6 phone.
-In 2025, Google releases a public repository with [Longfellow-zk's code](https://github.com/google/longfellow-zk).
+In early 2025, Google releases a public repository with Longfellow-zk's code[^longfellow].
 
 The Longfellow-zk construction does not require any public setup or
 pre-computation from either parties.
@@ -110,7 +122,7 @@ pre-computation from either parties.
 ## Security assumptions
 
 Longfellow's proposal builds on a combination of Sumcheck[^sumcheck] and Ligero[^ligero].
-As such, it relies on the [Random Oracle Model](https://en.wikipedia.org/wiki/Random_oracle) and does not require a public setup.
+As such, it relies on the Random Oracle Model[^rom] and does not require a public setup.
 As a reminder, the assumption made by the Random Oracle Model is the
 existence of collision-resistant hash functions (Theorem 1.1 in Ligero's paper[^ligero]).
 
@@ -121,34 +133,34 @@ _High-level overview of Longfellow-zk proof mechanism (described in the original
 
 Instead of relying on a SNARK construction, Longfellow uses Ligero
 to prove the correctness of execution of a protocol that proves
-C(x) = 0 for public circuit C, public input x,
-and private (prover) input w.
+$$C(x) = 0$$ for public circuit $$C$$, public input $$x$$,
+and private (prover) input $$w$$.
 
-Ligero is not used to prove C(x) = 0 directly as the computation is
+Ligero is not used to prove $$C(x) = 0$$ directly as the computation is
 large and performing
-[NTT](https://en.wikipedia.org/wiki/Discrete_Fourier_transform_over_a_ring#Number-theoretic_transform)
+NTT[^ntt]
 on such a large matrix would result in prohibitive proof generation
 time for the prover.
 
 Instead, a variant of Sumcheck is designed and used for the prover
 to commit to an accepting transcript t and Ligero is used to prove that
 this committed transcript t' corresponds to t and that t is indeed a
-proof that C(x) = 0.
+proof that $$C(x) = 0$$.
 
-As |t| < |C|, this results in much better performance. Section 5.2.1, page 37 describes the result of benchmarks for SHA-256 as "roughly 20x faster" than a Ligero instance.
+As <span>$$|t| \lt |C|$$</span>, this results in much better performance. Section 5.2.1, page 37 describes the result of benchmarks for SHA-256 as "roughly 20x faster" than a Ligero instance.
 
 ## Available code
 
-[Longfellow-zk repository](https://github.com/google/longfellow-zk) hosts an implementation of the proof system
+Longfellow-zk repository[^longfellow] hosts an implementation of the proof system
 along with circuits and benchmarks.
-[A security review by Trailsofbits](https://github.com/google/longfellow-zk/blob/main/docs/static/reviews/Longfellow_report_2025_08_18.pdf) is available and high severity issues
+A security review by Trailsofbits[^longfellow-security] is available and high severity issues
 have been corrected.
 
 ## Takeaways
 
 Longfellow relies on a "simple" construction backed by less-accessible
 optimizations of the proving system and the circuits construction.
-For an mDoc credential, prover time clocks in at 1.17s, while verification takes 0.68s on a Pixel 6 Pro phone (Section 6.2).
+For an mDoc credential, proving the issuer and holder signature, revocation check, and age proof, clocks in at 1.17s, while verification takes 0.68s on a Pixel 6 Pro phone (Section 6.2).
 This is achieved without any pre-computation, nor public setup.
 Unfortunately, the current open-source toolchain does not provide an
 easy way to write new circuits for other credential format or proof
@@ -173,36 +185,39 @@ The following compares both algorithm with regards to their main aspects:
 | External Audit     | No                                           | Yes, available                       |
 | Usability          | Good documentation and sample application    |                                      |
 | Composability      | Possible, due to Pedersen vector commitments | Very difficult (tools not available) |
-| Auditability       |                                              |                                      |
 | Required expertise | High                                         | Very high                            |
 
-Longfellow has been written to be implemented in an application using user credentials in a banking app for [Deutsche Bank](https://cloud.google.com/blog/topics/financial-services/deutsche-bank-delivers-ai-powered-financial-research-with-db-lumina/). For Crescent, there is no current usage documented yet.
+Longfellow has been written to be implemented in an application using user credentials in a banking app for Deutsche Bank[^longfellow-db]. 
+For Crescent, there is no current usage documented yet.
 
-From a performance point of view, Longfellow is superior to Crescent, as it can deliver a proof without having to perform lengthy pre-computation. On the other hand, Crescent has a somewhat more modular and understandable approach of creating the proofs and allow for other usages than the ones provided.
+From a performance point of view, Longfellow is superior to Crescent, as it can deliver a proof without having to perform lengthy pre-computation. 
+On the other hand, Crescent has a more modular and understandable approach of creating the proofs and allow for other usages than the ones provided.
 
-Both libraries suffer from the fact that they are hand-crafted for performance, and as such need a high confidence from the users. A more ideal solution would be based on something more understandable like [Noir](https://noir-lang.org), which lacks unfortunately the speed required for a day-to-day usage.
+Both libraries suffer from the fact that they are hand-crafted for performance, and as such need a high confidence from the users. 
+A more ideal solution would be based on a more understandable framework like Noir[^noir], which lacks unfortunately the speed required for usage in mobile devices.
 
 # Suitability for Swiyu
 
 Both Longfellow and Crescent provide an anonymous way of proving attributes of the users' credentials. The Swiyu features that are relevant here are:
+
 - Credential format: Swiyu uses SD-JWT VC
-- Holder-binding: Swiyu requires holder binding with ECDSA (compatible with existing TEEs)
+- Holder-binding: Swiyu requires holder binding with ECDSA on secp256k1
 - Revocation: Currently, Swiyu has a status list implementation for revocation
 - Identifier usage: Swiyu uses DID:webvh
-- Communication protocols: Are these technologies compatible with OID4VCI / OID4VP which Swiyu uses?
+- Communication protocol: OID4VP for the presentation of the credential to a third party. The OID4VP spec in Appendix B[^oid4vp] describes that OID4VP can transport any request and answer of presentation, as long as the sender and the receiver can use them.
 
 Here is a short overview of both Longfellow and Crescent with regards to these features:
-## Longfellow (@Lanterno)
+## Longfellow
 
 Longfellow concentrates on performance and works with the ISO mDL standard (ISO/IEC 18013-5). 
-It uses standard ECDSA as it's chosen signature for both the issuer and the device signature.
+It uses standard ECDSA on secp256k1 as it's chosen signature for both the issuer and the device signature.
 
-- Credential formats: the ISO mDL format was picked as it's one of the most used formats in the USA, and it's also mandated in the EUDI specification in Europe. It is not clear how much work it is to replace the mDL format in Longfellow with SD-JWT. A first implementation for JWT exists in the github repository: [circuits/jwt](https://github.com/google/longfellow-zk/tree/901c856ad9091a1ea6c16de823f3fad4f4b3df19/lib/circuits/jwt). As the Longfellow library already allows for selective disclosure, this implementation could be used, ignoring the `SD` part of SD-JWT.
-  One important point to note is that the JWT circuit is still work in progress as stated in the [review by dyne](https://news.dyne.org/longfellow-zero-knowledge-google-zk/).
+- Credential formats: the ISO mDL format was picked as it's one of the most used formats in the USA, and it's also mandated in the EUDI specification in Europe. 
+  A first implementation for JWT exists in the github repository[^longfellow-jwt], but it is still work in progress as stated in the June '25' review by dyne[^longfellow-dyne]... 
+  As the Longfellow library already allows for selective disclosure, this implementation could be used, ignoring the `SD` part of SD-JWT.
 - Holder binding: the public key of the holder's wallet must be added to the mDL document, and will be used to create the proof.
-- Revocation: Swiyu uses [Token Status Lists](https://swiyu-admin-ch.github.io/technology-stack/#credential-revocation--token-status-list) which was designed to work with the CBOR encoding used in mDL, so Longfellow would work seamlessly here as well.
+- Revocation: Swiyu uses Token Status Lists[^token-list] which was designed to work with the CBOR encoding used in mDL, so Longfellow would work seamlessly here as well.
 - Identifier usage: Longfellow requires the public key of the issuer. However, it doesn't require any specific standard for the format of the identity of the issuer or holder. Therefore, the choice of identifiers is not relevant as long as the identifier mechanism is able to provide the keys to the longfellow library when needed.
-- Communication protocols: The mdoc standard is supported by [OID4VC spec](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html#name-iso-mdl) and [OID4VP spec](https://openid.net/specs/openid-4-verifiable-presentations-1_0-29.html#name-semantics-for-iso-mdoc-base). 
 
 The biggest advantage of Longfellow is the very fast proving and verification time, which is less than 1 second on modern mobile phones. 
 This makes it directly usable as a solution for verifying Swiyu credentials.
@@ -217,8 +232,6 @@ The library they offer also provides more user-friendly instructions for running
 - Revocation: Crescent paper never mentions revocation. However, we assume that standard Zero-knowledge Set membership techniques
 will still apply here. (Specially that Token Status Lists integrate natively with mdocs, and KWT)
 - Identifier usage: the public key of the issuer must be provided to the proof, and can be taken from a DID:webvh.
-- Communication protocols: As mentioned in Longfellow, Crescent also works with the ISO mdoc format which is supported by both
-OID4VCI and OID4VP. A JWT credential format is also accepted by [OID4VCI](https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0-ID1.html#name-vc-signed-as-a-jwt-not-usin) and [OID4VP](https://openid.net/specs/openid-4-verifiable-presentations-1_0-29.html#name-semantics-for-json-based-cr)
 
 The easy extensibility of Crescent comes with a price regarding the proof-creation:
 - Pre-computation time: for every new credential added to the wallet, Crescent needs to do a once-per-credential setup which can take up to 26 seconds accordingly to microsoft's benchmarks (in the case of JWT).
@@ -230,22 +243,25 @@ The easy extensibility of Crescent comes with a price regarding the proof-creati
 It's worth noting here that these parameters can take a space up to 1 GB (or more) - LiGa: is this the size of the trusted parameters, or the pre-computed proof?
 An E-ID system using Crescent will need to decide how to implement this trusted parameter setup.
 
-# Takeaway points as conclusion
-- A prioris:
-	- Linus: is longfellow flexible and composable enough to solve other problems than just SD and holder binding? E.g., can we put it as a module in docknetwork?
-	- Clement: would like to use Longfellow, but it's haaaard (specific form for arithmetization, composed ligero+sumcheck is not trivial, tons of very technical optimizations). Otherwise "universal" in applicability and very performant, post-quantum safe.
-		- Update: okay arithmetization might be doable if I follow the course properly. Implementation still too opaque.
-	- Ahmed:
-
 # References
 
-[^crescent]: Crescent - [https://eprint.iacr.org/2024/2013](https://eprint.iacr.org/2024/2013)
+[^crescent]: Crescent: Stronger Privacy for Existing Credentials - [https://eprint.iacr.org/2024/2013](https://eprint.iacr.org/2024/2013), code available here: [https://github.com/microsoft/crescent-credentials](https://github.com/microsoft/crescent-credentials)
 [^zk-attest]: ZKAttest - [https://eprint.iacr.org/2021/1183](https://eprint.iacr.org/2021/1183)
 [^spartan]: Spartan - [https://eprint.iacr.org/2019/550](https://eprint.iacr.org/2019/550)
 [^ligero]: Ligero - [https://eprint.iacr.org/2022/1608](https://eprint.iacr.org/2022/1608)
-[^longfellow]: Anonymous credentials from ECDSA: [https://eprint.iacr.org/2024/2010](https://eprint.iacr.org/2024/2010), see also longfellow-zk: [https://github.com/google/longfellow-zk](https://github.com/google/longfellow-zk)
+[^longfellow]: Anonymous credentials from ECDSA - [https://eprint.iacr.org/2024/2010](https://eprint.iacr.org/2024/2010), code available here: [https://github.com/google/longfellow-zk](https://github.com/google/longfellow-zk)
 [^groth16]:  Groth16 - [https://eprint.iacr.org/2016/260](https://eprint.iacr.org/2016/260)
-[^sigma-proof]: Sigma protocols - https://en.wikipedia.org/wiki/Proof_of_knowledge#Sigma_protocols
-[^sd-jwt]: SD-JWT - https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/
-[^sumcheck]: https://dl.acm.org/doi/10.1145/146585.146605
-[^mdl]: - https://www.iso.org/standard/69084.html or https://en.wikipedia.org/wiki/Mobile_driver%27s_license
+[^sigma-proof]: Sigma protocols - [https://en.wikipedia.org/wiki/Proof_of_knowledge#Sigma_protocols](https://en.wikipedia.org/wiki/Proof_of_knowledge#Sigma_protocols)
+[^sd-jwt]: SD-JWT - [https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/](https://datatracker.ietf.org/doc/draft-ietf-oauth-selective-disclosure-jwt/)
+[^sumcheck]: Sumcheck - [https://dl.acm.org/doi/10.1145/146585.146605](https://dl.acm.org/doi/10.1145/146585.146605)
+[^mdl]: Mobile Drivers License (mDL) - [https://www.iso.org/standard/69084.html](https://www.iso.org/standard/69084.html) or [https://en.wikipedia.org/wiki/Mobile_driver%27s_license](https://en.wikipedia.org/wiki/Mobile_driver%27s_license)
+[^overview]: [Overview of Privacy and Unlinkability]({% post_url 2025-10-20-overview %}) 
+[^rom]: Random Oracle Model - [https://en.wikipedia.org/wiki/Random_oracle](https://en.wikipedia.org/wiki/Random_oracle)
+[^ntt]: Number Theoretic Transform - [https://en.wikipedia.org/wiki/Discrete_Fourier_transform_over_a_ring#Number-theoretic_transform](https://en.wikipedia.org/wiki/Discrete_Fourier_transform_over_a_ring#Number-theoretic_transform)
+[^longfellow-security]: A security review by Trailsofbits - [https://github.com/google/longfellow-zk/blob/main/docs/static/reviews/Longfellow_report_2025_08_18.pdf](https://github.com/google/longfellow-zk/blob/main/docs/static/reviews/Longfellow_report_2025_08_18.pdf)
+[^longfellow-db]: Project Longfellow with Deutsche Bank: [https://cloud.google.com/blog/topics/financial-services/deutsche-bank-delivers-ai-powered-financial-research-with-db-lumina/](https://cloud.google.com/blog/topics/financial-services/deutsche-bank-delivers-ai-powered-financial-research-with-db-lumina/)
+[^noir]: Noir language: [https://noir-lang.org](https://noir-lang.org)
+[^longfellow-jwt]: JWT circuit in Longfellow: [https://github.com/google/longfellow-zk/tree/901c856ad9091a1ea6c16de823f3fad4f4b3df19/lib/circuits/jwt](https://github.com/google/longfellow-zk/tree/901c856ad9091a1ea6c16de823f3fad4f4b3df19/lib/circuits/jwt)
+[^longfellow-dyne]: Longfellow review by dyne: [https://news.dyne.org/longfellow-zero-knowledge-google-zk/](https://news.dyne.org/longfellow-zero-knowledge-google-zk/)
+[^token-list]: Token Status Lists: [https://swiyu-admin-ch.github.io/technology-stack/#credential-revocation--token-status-list](https://swiyu-admin-ch.github.io/technology-stack/#credential-revocation--token-status-list)
+[^oid4vp]: OID4VP specification, Appendix B: [https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#appendix-B](https://openid.net/specs/openid-4-verifiable-presentations-1_0.html#appendix-B)
