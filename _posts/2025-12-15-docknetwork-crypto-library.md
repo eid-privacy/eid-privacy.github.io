@@ -6,18 +6,20 @@ categories: wp1
 author: EID Privacy Team
 ---
 
-As we sat out on our journey to build an E-ID system (use case: Diploma Verifiable Credential).  
-We realized early on, we needed to rely on open-source libraries for the components we needed as much as possible.  
+Our goal with the innosuisse grant has been to create a usable, understandable, 
+fast, and short algorithm for anonymized, unlinkable proofs of attributes in a verifiable credential.
 
-However, finding a library for any of the components wasn't straight forward!
+To avoid reinventing the wheel, early on, we looked for an open source library where we could contribute our findings to.
+However, finding such a library wasn't straight forward!
 
 # The Problem
 
 The open-source ecosystem for privacy-preserving identity is fragmented:
 
 - **Competing standards** pull resources in different directions (W3C VC, SD-JWT, mDL)
-- **Rapid evolution** leaves many libraries abandoned
-- **High complexity** makes it hard for contributors to join
+- **Maintenance/ Abandon** Rapid evolution leaves many libraries abandoned
+- **Security/ Trust** Cryptographic libraries require lots of auditing to be trusted in production applications
+- **High Complexity** makes it hard for contributors to join
 
 
 # Approach
@@ -27,11 +29,15 @@ being the area we wanted to contribute the most.
 After evaluating many options, one library stood out: **Dock Network's crypto library** 
 ([github.com/docknetwork/crypto](https://github.com/docknetwork/crypto)).
 
+The library was created and open-sourced by [dock.io](https://www.dock.io/); a digital identity startup,
+ and Currently maintained 
+by their lead cryptographer [Lovesh Harchandani](https://github.com/lovesh)
+
 # Why We Chose Dock
 
 Two factors made it attractive:
 
-1. **Focused scope**: It targets only E-ID primitives—BBS+ signatures, accumulators, and zero-knowledge proofs
+1. **Focused scope**: It targets only E-ID cryptography, BBS+ signatures, accumulators, and zero-knowledge proofs.
 2. **Full coverage**: From low-level Schnorr proofs to complete proof systems, all in one place, all dedicated to E-ID systems
 
 The codebase is well-engineered. Each primitive lives in its own Rust crate. Code references academic papers.
@@ -40,11 +46,10 @@ It supports backend servers, and WebAssembly for browsers.
 | Category | Primitives |
 |----------|------------|
 | **Signatures** | BBS+, BBS, PS, group signatures |
-| **Credentials** | Coconut, KVAC, Delegatable |
-| **Proofs** | Schnorr PoK, Sigma protocols |
-| **SNARKs** | LegoGroth16, Bulletproofs++ |
+| **Credentials** | Coconut, KVAC, Delegatable Credentials |
+| **Proofs** | Schnorr PoK, Sigma protocols, LegoGroth16, Bulletproofs++, Verifiable encryption |
 | **Accumulators** | VB dynamic accumulators |
-| **Utilities** | Verifiable encryption, Secret sharing, DKG |
+| **Misc** | , Secret sharing, DKG |
 
 # Library Structure
 
