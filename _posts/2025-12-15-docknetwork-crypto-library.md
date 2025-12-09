@@ -9,29 +9,28 @@ author: EID Privacy Team
 Our goal with the innosuisse grant has been to create a usable, understandable, 
 fast, and short algorithm for anonymized, unlinkable proofs of attributes in a verifiable credential.
 
-To avoid reinventing the wheel, early on, we looked for an open source library where we could contribute our findings to.
-However, finding such a library wasn't straight forward!
+To avoid reinventing the wheel, early on, we looked for an open-source library to which we could contribute our findings.
+However, finding such a library wasn't straightforward!
 
 # The Problem
 
 The open-source ecosystem for privacy-preserving identity is fragmented:
 
-- **Competing standards** pull resources in different directions (W3C VC, SD-JWT, mDL)
-- **Maintenance/ Abandon** Rapid evolution leaves many libraries abandoned
-- **Security/ Trust** Cryptographic libraries require lots of auditing to be trusted in production applications
+- **Competing standards** pull the community in different directions (W3C VC, SD-JWT, mDL)
+- **Maintenance/Abandonment** Rapid evolution leaves many libraries abandoned
+- **Security/Trust** Cryptographic libraries require lots of auditing to be trusted in production applications
 - **High Complexity** makes it hard for contributors to join
 
 
 # Approach
-We started our search for a good library that implements what we needed, and for that search we focused on the cryptographic primitives,
-being the area we wanted to contribute the most.
+We started our search for a good library that implements what we needed, focusing on the cryptographic primitives,
+as this was the area we wanted to contribute to the most.
 
 After evaluating many options, one library stood out: **Dock Network's crypto library** 
 ([github.com/docknetwork/crypto](https://github.com/docknetwork/crypto)).
 
-The library was created and open-sourced by [dock.io](https://www.dock.io/); a digital identity startup,
- and Currently maintained 
-by their lead cryptographer [Lovesh Harchandani](https://github.com/lovesh)
+The library was created and open-sourced by [dock.io](https://www.dock.io/), a digital identity startup,
+and is currently maintained by their lead cryptographer [Lovesh Harchandani](https://github.com/lovesh)
 
 # Why We Chose Dock
 
@@ -49,7 +48,7 @@ It supports backend servers, and WebAssembly for browsers.
 | **Credentials** | Coconut, KVAC, Delegatable Credentials |
 | **Proofs** | Schnorr PoK, Sigma protocols, LegoGroth16, Bulletproofs++, Verifiable encryption |
 | **Accumulators** | VB dynamic accumulators |
-| **Misc** | , Secret sharing, DKG |
+| **Misc** | Secret sharing, DKG |
 
 # Library Structure
 
@@ -65,7 +64,7 @@ The library spans three repositories:
    → [github.com/docknetwork/crypto-wasm-ts](https://github.com/docknetwork/crypto-wasm-ts)
 
 # Contribution
-Like most other libraries, this one lacks contributors. However, it's in a very state, and almost feature-complete, and production-ready.
+Like most other libraries, this one lacks contributors. However, it's in a very good state, almost feature-complete, and production-ready.
 
 This is why we decided to contribute as much as possible. Over the past year, we've made several 
 Pull Requests to add missing documentation and examples 
@@ -75,26 +74,26 @@ Pull Requests to add missing documentation and examples
 [[4](https://github.com/docknetwork/crypto-wasm-ts/pull/34)] 
 [[5](https://github.com/docknetwork/crypto-wasm-ts/pull/35)],
 
-and update the typescript project to latest rust counterpart 
+and updated the TypeScript project to the latest Rust counterpart 
 [[6](https://github.com/docknetwork/crypto-wasm-ts/pull/43)]
 [[7](https://github.com/docknetwork/crypto-wasm-ts/pull/46)]
 [[8](https://github.com/docknetwork/crypto-wasm/pull/16)]
 [[9](https://github.com/docknetwork/crypto-wasm/pull/17)]
-and we were happy to do some house-keeping and upating the dependencies 
+and we were happy to do some housekeeping and update the dependencies 
 [[10](https://github.com/docknetwork/crypto-wasm/pull/18)]
 [[11](https://github.com/docknetwork/crypto-wasm/pull/19)]
 [[12](https://github.com/docknetwork/crypto-wasm/pull/20)]
 .
 
 # Challenges
-During the endeavor, we've seen a couple challenges to contributig to this library.
+During this endeavor, we've encountered a couple of challenges when contributing to this library.
 
-- **Complicated workflow**: Any change in the API will require changes to 3 repositories to propogate
-from rust to the user facing typescript library.  
-- **Small team**: Currently, the library only have one maintainer. A great maintainer, 
+- **Complicated workflow**: Any change in the API will require changes to 3 repositories to propagate
+from Rust to the user-facing TypeScript library.  
+- **Small team**: Currently, the library only has one maintainer. A great maintainer, 
 but taking the bus factor into account, it's not ideal.  
 - **Sparse documentation**: Tutorials and guides are lacking. In such a highly technical field, 
-documentation and tutorials are much needed to be up-to-date.  
+documentation and tutorials need to be kept up-to-date.  
 - **Evolving standards**: Needs to track IETF BBS standardization
 
 # Conclusion
@@ -106,7 +105,7 @@ The main challenge is its small community. Broader adoption would help ensure lo
 We've contributed documentation, updates, and integration examples back to the project.
 
 
-## Library Architecture reference - co-built with LLMs 
+## Library Architecture Reference - Co-built with LLMs 
 
 The Rust crates follow a layered structure. Lower levels provide primitives. Higher levels build protocols. 
 The top-level `proof_system` crate ties everything together for composite proofs.
