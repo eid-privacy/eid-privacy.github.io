@@ -1,0 +1,15 @@
+---
+layout: post
+---
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+</article>
+
+<link rel="stylesheet" href="{{ '/assets/mermaid.css' | relative_url }}">
+<script type="module" src="{{ '/assets/mermaid-interactive.js' | relative_url }}"></script>
+

@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: post_with_mermaid
 title: "Choosing a Cryptographic Library for Anonymous Credentials"
 date: 2024-12-15 08:00:00 +0200
 categories: wp1
@@ -111,7 +111,7 @@ The Rust crates follow a layered structure. Lower levels provide primitives. Hig
 The top-level `proof_system` crate ties everything together for composite proofs.
 
 ```mermaid
-graph TB
+graph BT
     subgraph L0["Foundation"]
         merlin["merlin"]
     end
