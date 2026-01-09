@@ -37,7 +37,8 @@ and did a very comparable job compared to Longfellow:
 All times are for proof creation + verification, the sizes are the proof sizes.
 There are two big caveats with regard to the Noir / Longfellow comparison:
 - our tests for Noir are based on a MacBook Pro, not on a mobile phone
-- Longfellow uses post-quantum secure ZKPs, while Noir is based on elliptic curves
+- Longfellow uses post-quantum secure ZKPs, while our Noir circuits are 
+compiled and used by a proof system based on elliptic curves
 
 For more details, please read the 
 [Project Report](https://github.com/eid-privacy/MS2-Minimal-Viable-Project/releases/download/latest/eid_privacy-101.292-IP-ICT-ms2-report.pdf).
