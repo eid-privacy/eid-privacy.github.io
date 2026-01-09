@@ -2,7 +2,6 @@
 layout: post
 title:  "Proof-of-Concept for ZKPs"
 date:   2026-01-09 6:00:00 +0200
-categories: MS2, ZKP, PoC, Report
 ---
 
 For the milestone 2 of our Innosuisse project, we created a proof-of-concept
