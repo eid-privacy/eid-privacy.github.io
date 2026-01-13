@@ -105,93 +105,56 @@ The main challenge is its small community. Broader adoption would help ensure lo
 We've contributed documentation, updates, and integration examples back to the project.
 
 
-## Library Architecture Reference - Co-built with LLMs 
+## Library Architecture Reference
 
 The Rust crates follow a layered structure. Lower levels provide primitives. Higher levels build protocols. 
 The top-level `proof_system` crate ties everything together for composite proofs.
 
 ```mermaid
-graph BT
-    subgraph L0["Foundation"]
-        merlin["merlin"]
+graph TD
+    proof_system["Proof System"]
+    
+    %% the arrows -.-> are used to keep the nodes inside each group horizontally.
+    subgraph L3["Proof Of Knowledge (PoK)"]
+        bulletproofs_plus_plus["bulletproofs_plus_plus"] -.-> legogroth16["legogroth16"] -.-> verifiable_encryption["verifiable_encryption"]
+        smc_range_proof["smc_range_proof"] -.-> vb_accumulator["vb_accumulator"] -.-> equality_across_groups["equality_across_groups"]
     end
     
-    subgraph L1["Basic Proofs"]
-        schnorr_pok["schnorr_pok"]
-        compressed_sigma["compressed_sigma"]
-        bulletproofs_plus_plus["bulletproofs_plus_plus"]
-        legogroth16["legogroth16"]
+    subgraph L2["Anonymous Credentials"]
+        bbs_plus["bbs_plus"] -.-> coconut["coconut"] -.-> syra["syra"] -.-> delegatable_credentials["delegatable_credentials"]
     end
     
-    subgraph L2["Intermediate"]
-        secret_sharing_and_dkg["secret_sharing_and_dkg"]
-        oblivious_transfer["oblivious_transfer"]
-        kvac["kvac"]
-        delegatable_credentials["delegatable_credentials"]
+    subgraph L1["Cryptography"]
+        oblivious_transfer["oblivious_transfer"] -.-> secret_sharing_and_dkg["secret_sharing_and_dkg"] -.-> kvac["kvac"] -.-> short_group_sig["short_group_sig"]
+    end
+
+    subgraph L0["PoK Foundation"]
+        direction LR
+        merlin["merlin"] -.-> schnorr_pok["schnorr_pok"]
     end
     
-    subgraph L3["Schemes"]
-        bbs_plus["bbs_plus"]
-        coconut["coconut"]
-        short_group_sig["short_group_sig"]
-        saver["saver"]
-        verifiable_encryption["verifiable_encryption"]
-    end
-    
-    subgraph L4["Higher-Level"]
-        vb_accumulator["vb_accumulator"]
-        smc_range_proof["smc_range_proof"]
-        equality_across_groups["equality_across_groups"]
-        syra["syra"]
-    end
-    
-    subgraph L5["Integration"]
-        proof_system["proof_system"]
-    end
-    
-    %% Foundation connections
-    merlin -.-> schnorr_pok
-    
-    %% Left branch: schnorr_pok -> bbs_plus, short_group_sig, kvac
-    schnorr_pok --> bbs_plus
-    schnorr_pok --> short_group_sig
-    schnorr_pok --> kvac
-    
-    %% Right branch: schnorr_pok -> coconut, vb_accumulator
-    schnorr_pok --> coconut
-    schnorr_pok --> vb_accumulator
-    
-    %% Intermediate to Schemes
-    secret_sharing_and_dkg --> bbs_plus
-    secret_sharing_and_dkg --> coconut
-    
-    %% SNARK path
-    legogroth16 --> saver
-    
-    %% All to Integration - grouped to reduce visual clutter
-    bbs_plus --> proof_system
-    coconut --> proof_system
-    short_group_sig --> proof_system
-    saver --> proof_system
-    verifiable_encryption --> proof_system
-    vb_accumulator --> proof_system
-    smc_range_proof --> proof_system
-    equality_across_groups --> proof_system
-    syra --> proof_system
-    bulletproofs_plus_plus --> proof_system
-    
+    proof_system --> L3
+    proof_system --> L2
+
+    L3 --> L1
+    L3 --> L0
+
+    L2 --> L1
+    L2 --> L0 
+        
     %% Styling for better visual hierarchy
-    classDef foundation fill:#e1f5ff,stroke:#01579b,stroke-width:2px
-    classDef basic fill:#fff4e1,stroke:#e65100,stroke-width:2px
-    classDef intermediate fill:#f0f0f0,stroke:#424242,stroke-width:2px
-    classDef schemes fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    classDef higher fill:#fce4ec,stroke:#c2185b,stroke-width:2px
-    classDef integration fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    classDef level0 fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    classDef level1 fill:#fff4e1,stroke:#e65100,stroke-width:2px
+    classDef level2 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    classDef level3 fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef topLevel fill:#fff9c4,stroke:#f57f17,stroke-width:3px
     
-    class merlin foundation
-    class schnorr_pok,compressed_sigma,bulletproofs_plus_plus,legogroth16 basic
-    class secret_sharing_and_dkg,oblivious_transfer,kvac,delegatable_credentials intermediate
-    class bbs_plus,coconut,short_group_sig,saver,verifiable_encryption schemes
-    class vb_accumulator,smc_range_proof,equality_across_groups,syra higher
-    class proof_system integration
+    class merlin,schnorr_pok level0
+    class oblivious_transfer,secret_sharing_and_dkg,kvac,short_group_sig level1
+    class bbs_plus,coconut,syra,delegatable_credentials level2
+    class bulletproofs_plus_plus,legogroth16,verifiable_encryption,smc_range_proof,vb_accumulator,equality_across_groups level3
+    class proof_system topLevel
+    
+    %% Hide horizontal arrows (links 0-10)
+    linkStyle 0,1,2,3,4,5,6,7,8,9,10 stroke:transparent,stroke-width:0px
 ```
