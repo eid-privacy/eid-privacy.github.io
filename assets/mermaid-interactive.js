@@ -1,5 +1,10 @@
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 
+const ZOOM_MIN = 0.5;
+const ZOOM_MAX = 3;
+const ZOOM_STEP = 0.2;
+const WHEEL_SENSITIVITY = 0.001;
+
 function addZoomControls(mermaidDiv) {
   const container = document.createElement('div');
   container.className = 'mermaid-container';
@@ -19,43 +24,50 @@ function addZoomControls(mermaidDiv) {
     mermaidDiv.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
   };
   
-  const resetZoom = () => {
+  const resetTransform = () => {
     zoomLevel = 1;
     panX = 0;
     panY = 0;
-    mermaidDiv.classList.remove('mermaid-zoomed');
+    mermaidDiv.classList.toggle('mermaid-zoomed', false);
     applyTransform();
   };
   
-  mermaidDiv.addEventListener('mousedown', (e) => {
+  const setZoom = (newZoom, updateClass = true) => {
+    zoomLevel = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, newZoom));
+    if (updateClass) {
+      mermaidDiv.classList.toggle('mermaid-zoomed', zoomLevel !== 1);
+    }
+    applyTransform();
+  };
+  
+  const handleMouseDown = (e) => {
     if (e.target.closest('.mermaid-controls')) return;
     isDragging = true;
     container.classList.add('dragging');
     dragStart = { x: e.clientX, y: e.clientY, panX, panY };
     e.preventDefault();
-  });
+  };
   
-  document.addEventListener('mousemove', (e) => {
-    if (isDragging) {
-      panX = dragStart.panX + (e.clientX - dragStart.x);
-      panY = dragStart.panY + (e.clientY - dragStart.y);
-      applyTransform();
-    }
-  });
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    panX = dragStart.panX + (e.clientX - dragStart.x);
+    panY = dragStart.panY + (e.clientY - dragStart.y);
+    applyTransform();
+  };
   
-  document.addEventListener('mouseup', () => {
+  const handleMouseUp = () => {
     if (isDragging) {
       isDragging = false;
       container.classList.remove('dragging');
     }
-  });
+  };
   
-  container.addEventListener('wheel', (e) => {
+  const handleWheel = (e) => {
     if (e.target.closest('.mermaid-controls')) return;
     e.preventDefault();
     
-    const delta = -e.deltaY * 0.001;
-    const newZoom = Math.max(0.5, Math.min(3, zoomLevel + delta));
+    const delta = -e.deltaY * WHEEL_SENSITIVITY;
+    const newZoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, zoomLevel + delta));
     
     if (newZoom !== zoomLevel) {
       const rect = container.getBoundingClientRect();
@@ -64,14 +76,18 @@ function addZoomControls(mermaidDiv) {
       const graphX = (mouseX - panX - rect.width / 2) / zoomLevel;
       const graphY = (mouseY - panY - rect.height / 2) / zoomLevel;
       
-      zoomLevel = newZoom;
+      setZoom(newZoom, false);
       panX = mouseX - rect.width / 2 - graphX * zoomLevel;
       panY = mouseY - rect.height / 2 - graphY * zoomLevel;
-      
       mermaidDiv.classList.toggle('mermaid-zoomed', zoomLevel !== 1);
       applyTransform();
     }
-  }, { passive: false });
+  };
+  
+  mermaidDiv.addEventListener('mousedown', handleMouseDown);
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('mouseup', handleMouseUp);
+  container.addEventListener('wheel', handleWheel, { passive: false });
   
   const createButton = (text, title, onClick) => {
     const btn = document.createElement('button');
@@ -81,47 +97,31 @@ function addZoomControls(mermaidDiv) {
     return btn;
   };
   
-  controls.appendChild(createButton('+', 'Zoom in', () => {
-    zoomLevel = Math.min(zoomLevel + 0.2, 3);
-    mermaidDiv.classList.add('mermaid-zoomed');
-    applyTransform();
-  }));
-  
-  controls.appendChild(createButton('−', 'Zoom out', () => {
-    zoomLevel = Math.max(zoomLevel - 0.2, 0.5);
-    mermaidDiv.classList.toggle('mermaid-zoomed', zoomLevel !== 1);
-    applyTransform();
-  }));
-  
-  controls.appendChild(createButton('⟲', 'Reset', resetZoom));
+  controls.appendChild(createButton('+', 'Zoom in', () => setZoom(zoomLevel + ZOOM_STEP)));
+  controls.appendChild(createButton('−', 'Zoom out', () => setZoom(zoomLevel - ZOOM_STEP)));
+  controls.appendChild(createButton('⟲', 'Reset', resetTransform));
   
   const overlay = document.createElement('div');
-  overlay.style.cssText = 'position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.5); z-index: 9998; display: none;';
+  overlay.className = 'mermaid-overlay';
   document.body.appendChild(overlay);
   
+  const isFullscreen = () => container.classList.contains('mermaid-fullscreen');
+  
   const toggleFullscreen = () => {
-    if (!container.classList.contains('mermaid-fullscreen')) {
-      container.classList.add('mermaid-fullscreen');
-      document.body.style.overflow = 'hidden';
-      overlay.style.display = 'block';
-      fullscreenBtn.textContent = '✕';
-      fullscreenBtn.title = 'Exit fullscreen';
-      resetZoom();
-    } else {
-      container.classList.remove('mermaid-fullscreen');
-      document.body.style.overflow = '';
-      overlay.style.display = 'none';
-      fullscreenBtn.textContent = '⛶';
-      fullscreenBtn.title = 'Fullscreen';
-      resetZoom();
-    }
+    const fullscreen = !isFullscreen();
+    container.classList.toggle('mermaid-fullscreen', fullscreen);
+    document.body.style.overflow = fullscreen ? 'hidden' : '';
+    overlay.style.display = fullscreen ? 'block' : 'none';
+    fullscreenBtn.textContent = fullscreen ? '✕' : '⛶';
+    fullscreenBtn.title = fullscreen ? 'Exit fullscreen' : 'Fullscreen';
+    resetTransform();
   };
   
   const fullscreenBtn = createButton('⛶', 'Fullscreen', toggleFullscreen);
   overlay.onclick = toggleFullscreen;
   
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && container.classList.contains('mermaid-fullscreen')) {
+    if (e.key === 'Escape' && isFullscreen()) {
       toggleFullscreen();
     }
   });
@@ -151,6 +151,7 @@ function convertMermaidBlocks() {
   });
 }
 
+// Initialize
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', convertMermaidBlocks);
 } else {
