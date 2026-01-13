@@ -27,11 +27,11 @@ and did a very comparable job compared to Longfellow:
 
 | WP | Noir | Docknetwork | Longfellow |
 |----|------|-------------|------------|
-| WP3 - Device Binding | 0.5s / 16kB | 15s / 186kB (ZKAttest) | 1s / 300kB |
-| WP4 - Issuer Signature | 0.6s / 16kB | 0.1s / 0.5kB (BBS) | 1s / 300kB |
-| WP5 - Predicates | 0.2s / 16kB | 0.5s / 2kB (Bulletproofs) | 0.47s / 300kB |
-| WP6 - Non-Revocation | 0.5s / 16kB | 0.1s / 0.7kB (Accumulators) | - |
-| WP3..WP6 (Combined) | 1.5s / 16kB | 16s / 190kB | 1.170s / <1MB |
+| WP3 - Device Binding | 0.5s / 16kB | 0.95s / 186kB (ZKAttest) | 1s / 300kB |
+| WP4 - Issuer Signature | 0.6s / 16kB | 0.01s / 0.5kB (BBS) | 1s / 300kB |
+| WP5 - Predicates | 0.2s / 16kB | 0.04s / 2kB (Bulletproofs) | 0.47s / 300kB |
+| WP6 - Non-Revocation | 0.5s / 16kB | 0.01s / 0.7kB (Accumulators) | - |
+| WP3..WP6 (Combined) | 1.5s / 16kB | 1.0s / 190kB | 1.170s / <1MB |
 
 All times are for proof creation + verification, the sizes are the proof sizes.
 There are two big caveats with regard to the Noir / Longfellow comparison:
@@ -56,3 +56,9 @@ the Innosuisse project:
 
 You will find a short introduction of what the goals are, an overlook of the
 different ZKP types we looked into, and the experiments we ran.
+
+# Changes
+
+- 2026/01/13 - Thanks to Patrick Amrein from [Ubique](https://ubique.ch) who
+pointed out that `cargo test --release` produces 15x faster proving and 
+verification time for docknetwork!
