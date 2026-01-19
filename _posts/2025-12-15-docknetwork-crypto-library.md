@@ -1,28 +1,43 @@
 ---
 layout: post_with_mermaid
 title: "Choosing a Cryptographic Library for Anonymous Credentials"
-date: 2024-12-15 08:00:00 +0200
+date: 2025-12-15 08:00:00 +0200
 categories: wp1
 author: EID Privacy Team
 ---
 
-Our goal with the innosuisse grant has been to create a usable, understandable, 
-fast, and short algorithm for anonymized, unlinkable proofs of attributes in a verifiable credential.
+TODO:
+- choose more heading levels for better structure
 
-To avoid reinventing the wheel, early on, we looked for an open-source library to which we could contribute our findings.
-However, finding such a library wasn't straightforward!
+Our goal with the Innosuisse grant has been to create a usable, understandable, 
+fast, and short algorithm for anonymized, unlinkable proofs of attributes
+and validity in a verifiable credential.
 
-# The Problem
+We started out by making an overview of the existing libraries which we could
+use to build our research on.
+
+TODO: for "The Challenge" and "Approach", please do the following:
+- convert the 4 themes in "The Challenge" to a paragraph with generic
+phrases
+- make an introduction to the following
+- list the criteria found in https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md?plain=1#L100
+- give a short explanation of each line
+- point to https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md 
+and explain why we didn't chose the highest ranked library
+(functionality)
+
+# The Challenge
 
 The open-source ecosystem for privacy-preserving identity is fragmented:
 
 - **Competing standards** pull the community in different directions (W3C VC, SD-JWT, mDL)
 - **Maintenance/Abandonment** Rapid evolution leaves many libraries abandoned
 - **Security/Trust** Cryptographic libraries require lots of auditing to be trusted in production applications
-- **High Complexity** makes it hard for contributors to join
+- **High Complexity** makes it hard for contributors to join and for the library to be used
 
 
 # Approach
+
 We started our search for a good library that implements what we needed, focusing on the cryptographic primitives,
 as this was the area we wanted to contribute to the most.
 
@@ -37,7 +52,9 @@ and is currently maintained by their lead cryptographer [Lovesh Harchandani](htt
 Two factors made it attractive:
 
 1. **Focused scope**: It targets only E-ID cryptography, BBS+ signatures, accumulators, and zero-knowledge proofs.
-2. **Full coverage**: From low-level Schnorr proofs to complete proof systems, all in one place, all dedicated to E-ID systems
+2. **Full coverage**: From low-level Schnorr proofs to complete proof systems, all in one place, all dedicated to E-ID systems.
+
+TODO: this is the other end of appropriate sentence length: too short...
 
 The codebase is well-engineered. Each primitive lives in its own Rust crate. Code references academic papers.
 It supports backend servers, and WebAssembly for browsers.
@@ -52,6 +69,9 @@ It supports backend servers, and WebAssembly for browsers.
 
 # Library Structure
 
+TODO: Rename: This is the project structure. "Library Structure"
+refers more to the library architecture reference.
+
 The library spans three repositories:
 
 1. **Crypto** (Rust): Core cryptographic logic  
@@ -64,6 +84,7 @@ The library spans three repositories:
    → [github.com/docknetwork/crypto-wasm-ts](https://github.com/docknetwork/crypto-wasm-ts)
 
 # Contribution
+
 Like most other libraries, this one lacks contributors. However, it's in a very good state, almost feature-complete, and production-ready.
 
 This is why we decided to contribute as much as possible. Over the past year, we've made several 
@@ -99,6 +120,10 @@ documentation and tutorials need to be kept up-to-date.
 # Conclusion
 
 Dock's crypto library is the most complete option we've seen for privacy-preserving credentials. 
+
+TODO: it doesn't cover all we need for our research on e-ID - but it
+is a good comparison point and a good starting point.
+
 It's well-structured and covers all we needed to build an E-ID system. 
 The main challenge is its small community. Broader adoption would help ensure long-term maintenance.
 
@@ -106,6 +131,9 @@ We've contributed documentation, updates, and integration examples back to the p
 
 
 ## Library Architecture Reference
+
+TODO: find a better place for this - perhaps before the 
+"Project Structure"?
 
 The Rust crates follow a layered structure. Lower levels provide primitives. Higher levels build protocols. 
 The top-level `proof_system` crate ties everything together for composite proofs.
