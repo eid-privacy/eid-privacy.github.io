@@ -1,7 +1,7 @@
 ---
 layout: post_with_mermaid
 title: "Choosing a Cryptographic Library for Anonymous Credentials"
-date: 2025-12-15 08:00:00 +0200
+date: 2026-01-21 08:00:00 +0200
 categories: wp1
 author: EID Privacy Team
 ---
