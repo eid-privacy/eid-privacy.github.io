@@ -6,9 +6,6 @@ categories: wp1
 author: EID Privacy Team
 ---
 
-TODO:
-- choose more heading levels for better structure
-
 Our goal with the Innosuisse grant has been to create a usable, understandable, 
 fast, and short algorithm for anonymized, unlinkable proofs of attributes
 and validity in a verifiable credential.
@@ -16,48 +13,69 @@ and validity in a verifiable credential.
 We started out by making an overview of the existing libraries which we could
 use to build our research on.
 
-TODO: for "The Challenge" and "Approach", please do the following:
-- convert the 4 themes in "The Challenge" to a paragraph with generic
-phrases
-- make an introduction to the following
-- list the criteria found in https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md?plain=1#L100
-- give a short explanation of each line
-- point to https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md 
-and explain why we didn't chose the highest ranked library
-(functionality)
+## The Challenge
 
-# The Challenge
+The E-ID open-source ecosystem faces significant challenges. Competing standards that distribute 
+the community efforts, the rapid evolution of the field also leaves many libraries abandoned
+or poorly maintained creating uncertainity for potential adopters! High complexity of this domain
+and in general of the privacy-preserving domain often makes it difficult for new contributors 
+to join projects, and for developers to use these tools.
 
-The open-source ecosystem for privacy-preserving identity is fragmented:
-
-- **Competing standards** pull the community in different directions (W3C VC, SD-JWT, mDL)
-- **Maintenance/Abandonment** Rapid evolution leaves many libraries abandoned
-- **Security/Trust** Cryptographic libraries require lots of auditing to be trusted in production applications
-- **High Complexity** makes it hard for contributors to join and for the library to be used
-
-
-# Approach
+## Our Evaluation Approach
 
 We started our search for a good library that implements what we needed, focusing on the cryptographic primitives,
 as this was the area we wanted to contribute to the most.
 
-After evaluating many options, one library stood out: **Dock Network's crypto library** 
-([github.com/docknetwork/crypto](https://github.com/docknetwork/crypto)).
+To systematically evaluate the available options, we established a set of criteria based on 
+the [evaluation framework](https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md) 
+we developed for comparing cryptographic libraries. Each library was assessed across six key dimensions:
+
+1. **Software Structure / Architecture / Design / Engineering**: Evaluates the overall code quality, 
+   architectural decisions, and engineering practices, including code organization, modularity, and extensibility.
+
+2. **Unit Tests & CI/CD**: Assesses test coverage, quality of tests, and continuous integration/deployment setup, 
+   ensuring reliability and maintainability.
+
+3. **License, Ownership and Access**: Evaluates licensing clarity, intellectual property considerations, 
+   and accessibility, with preference for permissive open-source licenses.
+
+4. **Amenity to Change (Issues, PRs)**: Measures how actively maintained the project is and how responsive 
+   maintainers are to issues and pull requests.
+
+5. **Documentation**: Assesses the quality and completeness of documentation, including tutorials, 
+   API references, and examples.
+
+6. **Probable Support on the Next 2-3 Years**: Predicts the likelihood of continued maintenance and support, 
+   considering factors like organizational backing and community activity.
+
+For a complete overview of our evaluation methodology and all libraries we considered, 
+see our [WP2-Libraries repository](https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md).
+
+While some libraries scored higher overall in our evaluation (notably Microsoft's Crescent, 
+which received the highest quality score), we ultimately chose **Dock Network's crypto library** 
+([github.com/docknetwork/crypto](https://github.com/docknetwork/crypto)) because it best matched 
+our functional requirements. The highest-ranked libraries, while excellent in their own right, 
+did not provide the specific combination of cryptographic primitives we needed for our research 
+on E-ID systems. Dock's library offered the right balance of functionality, focus, and 
+architectural quality for our use case.
 
 The library was created and open-sourced by [dock.io](https://www.dock.io/), a digital identity startup,
-and is currently maintained by their lead cryptographer [Lovesh Harchandani](https://github.com/lovesh)
+and is currently maintained by their lead cryptographer [Lovesh Harchandani](https://github.com/lovesh).
 
-# Why We Chose Dock
+## Why We Chose Dock
+
+### Key Advantages
 
 Two factors made it attractive:
 
 1. **Focused scope**: It targets only E-ID cryptography, BBS+ signatures, accumulators, and zero-knowledge proofs.
 2. **Full coverage**: From low-level Schnorr proofs to complete proof systems, all in one place, all dedicated to E-ID systems.
 
-TODO: this is the other end of appropriate sentence length: too short...
+### Supported Primitives
 
-The codebase is well-engineered. Each primitive lives in its own Rust crate. Code references academic papers.
-It supports backend servers, and WebAssembly for browsers.
+The codebase is well-engineered, with each primitive living in its own Rust crate and code references 
+to academic papers. It supports both backend servers and WebAssembly for browsers, making it 
+suitable for a wide range of deployment scenarios.
 
 | Category | Primitives |
 |----------|------------|
@@ -67,73 +85,7 @@ It supports backend servers, and WebAssembly for browsers.
 | **Accumulators** | VB dynamic accumulators |
 | **Misc** | Secret sharing, DKG |
 
-# Library Structure
-
-TODO: Rename: This is the project structure. "Library Structure"
-refers more to the library architecture reference.
-
-The library spans three repositories:
-
-1. **Crypto** (Rust): Core cryptographic logic  
-   → [github.com/docknetwork/crypto](https://github.com/docknetwork/crypto)
-
-2. **Crypto-Wasm** (Rust/TS): WebAssembly wrapper for browser use  
-   → [github.com/docknetwork/crypto-wasm](https://github.com/docknetwork/crypto-wasm)
-
-3. **Crypto-Wasm-TS** (TypeScript): High-level APIs for web developers  
-   → [github.com/docknetwork/crypto-wasm-ts](https://github.com/docknetwork/crypto-wasm-ts)
-
-# Contribution
-
-Like most other libraries, this one lacks contributors. However, it's in a very good state, almost feature-complete, and production-ready.
-
-This is why we decided to contribute as much as possible. Over the past year, we've made several 
-Pull Requests to add missing documentation and examples 
-[[1](https://github.com/docknetwork/crypto-wasm-ts/pull/37)] 
-[[2](https://github.com/docknetwork/crypto-wasm-ts/pull/39)] 
-[[3](https://github.com/docknetwork/crypto-wasm-ts/pull/42)]
-[[4](https://github.com/docknetwork/crypto-wasm-ts/pull/34)] 
-[[5](https://github.com/docknetwork/crypto-wasm-ts/pull/35)],
-
-and updated the TypeScript project to the latest Rust counterpart 
-[[6](https://github.com/docknetwork/crypto-wasm-ts/pull/43)]
-[[7](https://github.com/docknetwork/crypto-wasm-ts/pull/46)]
-[[8](https://github.com/docknetwork/crypto-wasm/pull/16)]
-[[9](https://github.com/docknetwork/crypto-wasm/pull/17)]
-and we were happy to do some housekeeping and update the dependencies 
-[[10](https://github.com/docknetwork/crypto-wasm/pull/18)]
-[[11](https://github.com/docknetwork/crypto-wasm/pull/19)]
-[[12](https://github.com/docknetwork/crypto-wasm/pull/20)]
-.
-
-# Challenges
-During this endeavor, we've encountered a couple of challenges when contributing to this library.
-
-- **Complicated workflow**: Any change in the API will require changes to 3 repositories to propagate
-from Rust to the user-facing TypeScript library.  
-- **Small team**: Currently, the library only has one maintainer. A great maintainer, 
-but taking the bus factor into account, it's not ideal.  
-- **Sparse documentation**: Tutorials and guides are lacking. In such a highly technical field, 
-documentation and tutorials need to be kept up-to-date.  
-- **Evolving standards**: Needs to track IETF BBS standardization
-
-# Conclusion
-
-Dock's crypto library is the most complete option we've seen for privacy-preserving credentials. 
-
-TODO: it doesn't cover all we need for our research on e-ID - but it
-is a good comparison point and a good starting point.
-
-It's well-structured and covers all we needed to build an E-ID system. 
-The main challenge is its small community. Broader adoption would help ensure long-term maintenance.
-
-We've contributed documentation, updates, and integration examples back to the project.
-
-
-## Library Architecture Reference
-
-TODO: find a better place for this - perhaps before the 
-"Project Structure"?
+### Library Architecture Reference
 
 The Rust crates follow a layered structure. Lower levels provide primitives. Higher levels build protocols. 
 The top-level `proof_system` crate ties everything together for composite proofs.
@@ -155,7 +107,7 @@ graph TD
     subgraph L1["Cryptography"]
         oblivious_transfer["oblivious_transfer"] -.-> secret_sharing_and_dkg["secret_sharing_and_dkg"] -.-> kvac["kvac"] -.-> short_group_sig["short_group_sig"]
     end
-
+    
     subgraph L0["PoK Foundation"]
         direction LR
         merlin["merlin"] -.-> schnorr_pok["schnorr_pok"]
@@ -186,3 +138,60 @@ graph TD
     %% Hide horizontal arrows (links 0-10)
     linkStyle 0,1,2,3,4,5,6,7,8,9,10 stroke:transparent,stroke-width:0px
 ```
+
+## Project Structure
+
+The library spans three repositories:
+
+1. **Crypto** (Rust): Core cryptographic logic  
+   → [github.com/docknetwork/crypto](https://github.com/docknetwork/crypto)
+
+2. **Crypto-Wasm** (Rust/TS): WebAssembly wrapper for browser use  
+   → [github.com/docknetwork/crypto-wasm](https://github.com/docknetwork/crypto-wasm)
+
+3. **Crypto-Wasm-TS** (TypeScript): High-level APIs for web developers  
+   → [github.com/docknetwork/crypto-wasm-ts](https://github.com/docknetwork/crypto-wasm-ts)
+
+## Our Contributions
+
+Like most other libraries, this one lacks contributors. However, it's in a very good state, almost feature-complete, and production-ready.
+
+This is why we decided to contribute as much as possible. Over the past year, we've made several 
+Pull Requests to add missing documentation and examples 
+[[1](https://github.com/docknetwork/crypto-wasm-ts/pull/37)] 
+[[2](https://github.com/docknetwork/crypto-wasm-ts/pull/39)] 
+[[3](https://github.com/docknetwork/crypto-wasm-ts/pull/42)]
+[[4](https://github.com/docknetwork/crypto-wasm-ts/pull/34)] 
+[[5](https://github.com/docknetwork/crypto-wasm-ts/pull/35)],
+
+and updated the TypeScript project to the latest Rust counterpart 
+[[6](https://github.com/docknetwork/crypto-wasm-ts/pull/43)]
+[[7](https://github.com/docknetwork/crypto-wasm-ts/pull/46)]
+[[8](https://github.com/docknetwork/crypto-wasm/pull/16)]
+[[9](https://github.com/docknetwork/crypto-wasm/pull/17)].
+We were also happy to do some housekeeping and update the dependencies 
+[[10](https://github.com/docknetwork/crypto-wasm/pull/18)]
+[[11](https://github.com/docknetwork/crypto-wasm/pull/19)]
+[[12](https://github.com/docknetwork/crypto-wasm/pull/20)].
+
+## Challenges
+
+During this endeavor, we've encountered a couple of challenges when contributing to this library:
+
+- **Complicated workflow**: Any change in the API will require changes to 3 repositories to propagate
+from Rust to the user-facing TypeScript library.  
+- **Small team**: Currently, the library only has one maintainer. A great maintainer, 
+but taking the bus factor into account, it's not ideal.  
+- **Sparse documentation**: Tutorials and guides are lacking. In such a highly technical field, 
+documentation and tutorials need to be kept up-to-date.  
+- **Evolving standards**: Needs to track IETF BBS standardization
+
+## Conclusion
+
+Dock's crypto library is the most complete option we've seen for privacy-preserving credentials. 
+While it doesn't cover all we need for our research on e-ID, it serves as an excellent comparison 
+point and a solid starting point for our work. It's well-structured and covers all we needed to 
+build an E-ID system. The main challenge is its small community. Broader adoption would help ensure 
+long-term maintenance.
+
+We've contributed documentation, updates, and integration examples back to the project.
