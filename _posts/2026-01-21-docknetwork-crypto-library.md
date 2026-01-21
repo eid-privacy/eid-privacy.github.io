@@ -30,23 +30,12 @@ To systematically evaluate the available options, we established a set of criter
 the [evaluation framework](https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md) 
 we developed for comparing cryptographic libraries. Each library was assessed across six key dimensions:
 
-1. **Software Structure / Architecture / Design / Engineering**: Evaluates the overall code quality, 
-   architectural decisions, and engineering practices, including code organization, modularity, and extensibility.
-
-2. **Unit Tests & CI/CD**: Assesses test coverage, quality of tests, and continuous integration/deployment setup, 
-   ensuring reliability and maintainability.
-
-3. **License, Ownership and Access**: Evaluates licensing clarity, intellectual property considerations, 
-   and accessibility, with preference for permissive open-source licenses.
-
-4. **Amenity to Change (Issues, PRs)**: Measures how actively maintained the project is and how responsive 
-   maintainers are to issues and pull requests.
-
-5. **Documentation**: Assesses the quality and completeness of documentation, including tutorials, 
-   API references, and examples.
-
-6. **Probable Support on the Next 2-3 Years**: Predicts the likelihood of continued maintenance and support, 
-   considering factors like organizational backing and community activity.
+1. **Software Structure**: Code quality, architectural decisions, and engineering practices
+2. **Testing & CI/CD**: Test coverage and continuous integration/deployment setup
+3. **License, Ownership and Access**: Licensing clarity and accessibility, with preference for permissive open-source licenses
+4. **Amenity to Change (Issues, PRs)**: How actively maintained the project is and responsiveness to issues and pull requests
+5. **Documentation**: Quality and completeness of documentation, including tutorials and API references
+6. **Probable Support on the Next 2-3 Years**: Likelihood of continued maintenance and support
 
 For a complete overview of our evaluation methodology and all libraries we considered, 
 see our [WP2-Libraries repository](https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md).
