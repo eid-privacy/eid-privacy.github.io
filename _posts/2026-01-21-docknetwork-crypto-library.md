@@ -40,6 +40,8 @@ we developed for comparing cryptographic libraries. Each library was assessed ac
 For a complete overview of our evaluation methodology and all libraries we considered, 
 see our [WP2-Libraries repository](https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md).
 
+### Key Advantages of dock network library
+
 While some libraries scored higher overall in our evaluation (notably Microsoft's Crescent, 
 which received the highest quality score), we ultimately chose **Dock Network's crypto library** 
 ([github.com/docknetwork/crypto](https://github.com/docknetwork/crypto)) because it best matched 
@@ -50,15 +52,6 @@ architectural quality for our use case.
 
 The library was created and open-sourced by [dock.io](https://www.dock.io/), a digital identity startup,
 and is currently maintained by their lead cryptographer [Lovesh Harchandani](https://github.com/lovesh).
-
-## Why We Chose Dock
-
-### Key Advantages
-
-Two factors made it attractive:
-
-1. **Focused scope**: It targets only E-ID cryptography, BBS+ signatures, accumulators, and zero-knowledge proofs.
-2. **Full coverage**: From low-level Schnorr proofs to complete proof systems, all in one place, all dedicated to E-ID systems.
 
 ### Supported Primitives
 
