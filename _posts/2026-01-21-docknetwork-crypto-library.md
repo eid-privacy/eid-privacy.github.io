@@ -179,6 +179,12 @@ long-term maintenance.
 
 We've contributed documentation, updates, and integration examples back to the project.
 
-TODO: we need to mention noir here, because this is what we currently focus on. TLDR: docknetwork great,
-after deep-dive not as flexible as we hoped, then we looked at noir (post to be written :)
-Question: why does noir fair so badly in https://github.com/eid-privacy/WP2-Libraries/tree/main?tab=readme-ov-file#zero-knowledge-circuit-frameworks ?
+# What's Next: Exploring Noir
+While finalizing our proof-of-concept with Dock Network's libraries, a new domain-specific language (DSL) got our attention.
+**Noir**: a DSL developed by the Aztec foundation targeting specifically developing privacy-preserving ZK applications. 
+Noir's main audience is mostly Blockchain developers, but its use-cases beyond that to E-ID and other privacy-preserving applications.
+
+We're currently wrapping up a second proof-of-concept using Noir, and the early results are very promising. 
+The developer experience feels fundamentally different, more intuitive, and significantly faster to iterate on. 
+
+We'll share our findings, comparisons, and insights in an upcoming post. Stay tuned! 
