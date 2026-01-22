@@ -179,12 +179,11 @@ long-term maintenance.
 
 We've contributed documentation, updates, and integration examples back to the project.
 
-# What's Next: Exploring Noir
 While finalizing our proof-of-concept with Dock Network's libraries, a new domain-specific language (DSL) caught our attention.
 **Noir**: a DSL developed by the Aztec Foundation, specifically targeting the development of privacy-preserving ZK applications. 
-Noir's main audience is blockchain developers, but its use cases extend beyond that to E-ID and other privacy-preserving applications.
+Noir's main audience is Blockchain developers, but it can also be used in e-ID and other privacy-preserving applications which are not based on a blockchain.
 
 We're currently wrapping up a second proof-of-concept using Noir, and the early results are very promising. 
 The developer experience feels fundamentally different—more intuitive and enabling significantly faster iteration. 
 
-We'll share our findings, comparisons, and insights in an upcoming post. Stay tuned! 
+You can find our findings, comparisons, and insights in [this recent blog post](https://eid-privacy.github.io/2026/01/09/poc-report.html). 
