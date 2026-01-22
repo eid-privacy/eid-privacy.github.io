@@ -2,31 +2,30 @@
 layout: post_with_mermaid
 title: "Choosing a Cryptographic Library for Anonymous Credentials"
 date: 2026-01-21 08:00:00 +0200
-categories: wp1
+categories: wp2
 author: EID Privacy Team
 ---
 
-Our goal with the Innosuisse grant has been to create a usable, understandable, 
-fast, and short algorithm for anonymized, unlinkable proofs of attributes
-and validity in a verifiable credential.
-
-We started out by making an overview of the existing libraries which we could
+In WP1 we created a list of existing algorithms and tools for anonymous proofs
+in electronic identities.
+The findings of WP1 were used to create an overview of existing libraries which we can
 use to build our research on.
+This post describes how we evaluated the relevant libraries we found, and for which ones
+we did a deeper evaluation.
 
 ## The Challenge
 
-The E-ID open-source ecosystem faces significant challenges. Competing standards that distribute 
-the community efforts, the rapid evolution of the field also leaves many libraries abandoned
-or poorly maintained creating uncertainity for potential adopters! High complexity of this domain
-and in general of the privacy-preserving domain often makes it difficult for new contributors 
-to join projects, and for developers to use these tools.
+The E-ID open-source ecosystem faces significant challenges: competing standards that scatter 
+the community efforts, rapid evolution of the field, and a high complexity of the algorithms.
+This makes it difficult for new contributors to join existing projects, leaves many 
+libraries abandoned or poorly maintained, and creates uncertainty for potential adopters!
 
 ## Our Evaluation Approach
 
-We started our search for a good library that implements what we needed, focusing on the cryptographic primitives,
-as this was the area we wanted to contribute to the most.
+We focused our search on the implementation of the cryptographic primitives identified in WP1,
+as this is the area we want to contribute the most.
 
-To systematically evaluate the available options, we established a set of criteria based on 
+To systematically evaluate the available libraries, we established a set of criteria based on 
 the [evaluation framework](https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md) 
 we developed for comparing cryptographic libraries. Each library was assessed across six key dimensions:
 
@@ -40,7 +39,7 @@ we developed for comparing cryptographic libraries. Each library was assessed ac
 For a complete overview of our evaluation methodology and all libraries we considered, 
 see our [WP2-Libraries repository](https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md).
 
-### Key Advantages of dock network library
+### Why we Chose Docknetwork
 
 While some libraries scored higher overall in our evaluation (notably Microsoft's Crescent, 
 which received the highest quality score), we ultimately chose **Dock Network's crypto library** 
@@ -50,10 +49,12 @@ did not provide the specific combination of cryptographic primitives we needed f
 on E-ID systems. Dock's library offered the right balance of functionality, focus, and 
 architectural quality for our use case.
 
+# Docknectwork/crypto
+
 The library was created and open-sourced by [dock.io](https://www.dock.io/), a digital identity startup,
 and is currently maintained by their lead cryptographer [Lovesh Harchandani](https://github.com/lovesh).
 
-### Supported Primitives
+## Supported Primitives
 
 The codebase is well-engineered, with each primitive living in its own Rust crate and code references 
 to academic papers. It supports both backend servers and WebAssembly for browsers, making it 
@@ -67,7 +68,7 @@ suitable for a wide range of deployment scenarios.
 | **Accumulators** | VB dynamic accumulators |
 | **Misc** | Secret sharing, DKG |
 
-### Library Architecture Reference
+## Library Architecture Reference
 
 The Rust crates follow a layered structure. Lower levels provide primitives. Higher levels build protocols. 
 The top-level `proof_system` crate ties everything together for composite proofs.
@@ -168,7 +169,7 @@ but taking the bus factor into account, it's not ideal.
 documentation and tutorials need to be kept up-to-date.  
 - **Evolving standards**: Needs to track IETF BBS standardization
 
-## Conclusion
+# Conclusion
 
 Dock's crypto library is the most complete option we've seen for privacy-preserving credentials. 
 While it doesn't cover all we need for our research on e-ID, it serves as an excellent comparison 
@@ -177,3 +178,7 @@ build an E-ID system. The main challenge is its small community. Broader adoptio
 long-term maintenance.
 
 We've contributed documentation, updates, and integration examples back to the project.
+
+TODO: we need to mention noir here, because this is what we currently focus on. TLDR: docknetwork great,
+after deep-dive not as flexible as we hoped, then we looked at noir (post to be written :)
+Question: why does noir fair so badly in https://github.com/eid-privacy/WP2-Libraries/tree/main?tab=readme-ov-file#zero-knowledge-circuit-frameworks ?
