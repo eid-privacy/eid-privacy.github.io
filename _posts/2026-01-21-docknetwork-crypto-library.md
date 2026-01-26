@@ -186,4 +186,4 @@ Noir's main audience is Blockchain developers, but it can also be used in e-ID a
 We're currently wrapping up a second proof-of-concept using Noir, and the early results are very promising. 
 The developer experience feels fundamentally different—more intuitive and enabling significantly faster iteration. 
 
-You can find our findings, comparisons, and insights in [this recent blog post](https://eid-privacy.github.io/2026/01/09/poc-report.html). 
+You can find our findings, comparisons, and insights in [our post](https://eid-privacy.github.io/2026/01/09/poc-report.html). 
