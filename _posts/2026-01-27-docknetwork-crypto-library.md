@@ -164,7 +164,7 @@ During this endeavor, we've encountered a couple of challenges when contributing
 - **Complicated workflow**: Any change in the API will require changes to 3 repositories to propagate
 from Rust to the user-facing TypeScript library.  
 - **Small team**: Currently, the library only has one maintainer. A great maintainer, 
-but taking the bus factor into account, it's not ideal.  
+but taking the [bus factor](https://en.wikipedia.org/wiki/Bus_factor) into account, it's not ideal.  
 - **Sparse documentation**: Tutorials and guides are lacking. In such a highly technical field, 
 documentation and tutorials need to be kept up-to-date.  
 - **Evolving standards**: Needs to track IETF BBS standardization
