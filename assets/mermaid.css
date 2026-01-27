@@ -1,0 +1,88 @@
+.mermaid-container {
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  margin: 1.5em 0;
+  background: #fafafa;
+  max-width: 100%;
+}
+
+.mermaid-container .mermaid {
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+  min-height: 200px;
+  cursor: grab;
+  user-select: none;
+}
+
+.mermaid-container.dragging .mermaid {
+  cursor: grabbing;
+}
+
+.mermaid-container:not(.mermaid-fullscreen) svg {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+}
+
+.mermaid-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 5px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.mermaid-controls button {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.mermaid-controls button:hover {
+  background: #f0f0f0;
+}
+
+.mermaid-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9998;
+  display: none;
+}
+
+.mermaid-fullscreen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 95vw;
+  max-width: 3000px;
+  max-height: 95vh;
+  z-index: 9999;
+  background: white;
+  overflow: auto;
+  padding: 20px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.mermaid-zoomed {
+  transform-origin: center center;
+  transition: transform 0.3s ease;
+}
