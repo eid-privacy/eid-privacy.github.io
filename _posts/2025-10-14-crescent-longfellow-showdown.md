@@ -201,7 +201,7 @@ A more ideal solution would be based on a more understandable framework like Noi
 Both Longfellow and Crescent provide an anonymous way of proving attributes of the users' credentials. The Swiyu features that are relevant here are:
 
 - Credential format: Swiyu uses SD-JWT VC
-- Holder-binding: Swiyu requires holder binding with ECDSA on secp256k1
+- Holder-binding: Swiyu requires holder binding with ECDSA on secp256r1
 - Revocation: Currently, Swiyu has a status list implementation for revocation
 - Identifier usage: Swiyu uses DID:webvh
 - Communication protocol: OID4VP for the presentation of the credential to a third party. The OID4VP spec in Appendix B[^oid4vp] describes that OID4VP can transport any request and answer of presentation, as long as the sender and the receiver can use them.
@@ -210,7 +210,7 @@ Here is a short overview of both Longfellow and Crescent with regards to these f
 ## Longfellow
 
 Longfellow concentrates on performance and works with the ISO mDL standard (ISO/IEC 18013-5). 
-It uses standard ECDSA on secp256k1 as it's chosen signature for both the issuer and the device signature.
+It uses standard ECDSA on secp256r1 as it's chosen signature for both the issuer and the device signature.
 
 - Credential formats: the ISO mDL format was picked as it's one of the most used formats in the USA, and it's also mandated in the EUDI specification in Europe. 
   A first implementation for JWT exists in the github repository[^longfellow-jwt], but it is still work in progress as stated in the June '25' review by dyne[^longfellow-dyne]... 
