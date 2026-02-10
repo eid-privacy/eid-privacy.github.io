@@ -6,7 +6,7 @@ categories: wp0
 math: "true"
 author: Clément Humbert, Linus Gasser, and Ahmed Elghareeb
 ---
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 # Introduction 
 
 With the introduction of more and more governmental electronic identities (e-ID) in the EU and Switzerland, the question of privacy becomes ever more important.
