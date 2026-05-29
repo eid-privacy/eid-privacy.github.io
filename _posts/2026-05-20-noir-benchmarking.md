@@ -40,7 +40,7 @@ On the y-axis you can see the time it took to create a full
 proof, which includes:
 
 - **Execution**: filling out the private and public values in the
-compiled circuit. This is something the client needs to do for
+compiled circuit. This is something the holder needs to do for
 every new proof.
 - **Proving**: generating a mathematical proof that the values in
 the circuit satisfy all the constraints defined by the Noir program.
