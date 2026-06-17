@@ -1,7 +1,7 @@
 ---
 layout: post_with_mermaid
 title: "Verifiable SD-JWT Credential on Mobile"
-date: 2026-06-03 08:00:00 +0200
+date: 2026-06-17 08:00:00 +0200
 categories: wp2
 author: Carine Dengler
 ---
