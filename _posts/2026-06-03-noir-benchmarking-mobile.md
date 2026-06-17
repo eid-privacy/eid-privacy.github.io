@@ -38,6 +38,9 @@ results.
 | c09_full_proof       | 6.483                   | 5.643    | 6.940     |
 | d10_swiyu_jwt        | 18.419                  | 16.154   | 21.013    |
 
+*Note: refer to [zkp-pocs](https://github.com/eid-privacy/zkp-pocs#implemented-proofs)
+for circuit implementation details.*
+
 While at first sight the runtime of the verifiable SD-JWT credential does
 seem to leave much to be desired, it is important to point out that this
 is an entirely unoptimised circuit. Its runtime of 18.5 seconds on
