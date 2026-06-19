@@ -1,7 +1,7 @@
 ---
 layout: post_with_mermaid
 title: "Verifiable SD-JWT Credential on Mobile"
-date: 2026-06-17 08:00:00 +0200
+date: 2026-06-19 08:00:00 +0200
 categories: wp2
 author: Carine Dengler
 ---
@@ -12,13 +12,16 @@ SD-JWT credential as used in SWIYU on commodity hardware,
 namely a MacBook Pro.
 
 While at first glance it appears to be only the next logical step to
-also measure the performance of our circuits - including, most
-importantly, the verifiable SD-JWT credential - it is in reality a
-major milestone in our efforts to add zero-knowledge proofs to the
-Swiss e-ID ecosystem.
+also measure the performance of our circuits on a mobile phone,
+it is in reality a major milestone in our efforts to add 
+zero-knowledge proofs to the Swiss e-ID ecosystem.
+Our experimental [**zkp-android** repository](https://github.com/eid-privacy/zkp-android)
+includes a circuit verifying an unmodified (*) Swiyu credential
+with holder binding, and returning an age-proof.
 
 The existing privacy-preserving digital credentials, Crescent and
-Longfellow which we discussed in a previous [blog post](https://eid-privacy.github.io/wp0/2025/11/28/crescent-longfellow-showdown.html),
+Longfellow which we discussed in a previous 
+[blog post](https://eid-privacy.github.io/wp0/2025/11/28/crescent-longfellow-showdown.html),
 rely on specialised credentials to achieve their impressive speed of
 < 1s proof verification time. We, on the other hand, are able to use
 the standard SD-JWT through a Noir circuit, a major prerequisite
@@ -41,6 +44,11 @@ results.
 *Note: refer to [zkp-pocs](https://github.com/eid-privacy/zkp-pocs#implemented-proofs)
 for circuit implementation details.*
 
+<figure style="text-align: center;">
+  <img src="/assets/images/android_swiyu.png" alt="Swiyu age verification with holder binding running in Android" style="width: 30%; display: block; margin: 0 auto;">
+  <figcaption>Circuit d10 with swiyu age verification and holder binding running on Android</figcaption>
+</figure>
+
 While at first sight the runtime of the verifiable SD-JWT credential does
 seem to leave much to be desired, it is important to point out that this
 is an entirely unoptimised circuit. Its runtime of 18.5 seconds on
@@ -57,3 +65,11 @@ The next steps are to confirm our performance measurements using a second
 library, [Noir Android](https://github.com/madztheo/noir_android), and to
 continue working on optimising the Noir circuits to achieve better
 performance.
+
+All circuit code and benchmarking infrastructure is available in our open-source
+[**zkp-android** repository](https://github.com/eid-privacy/zkp-android).
+
+(*) we had to modify two things in the Swiyu SD-JWT credential we
+got from the Swiyu test instance: replace the device public key with
+our custom device key and creating a new issuer signature with our custom
+issuer key.
