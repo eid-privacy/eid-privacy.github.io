@@ -41,8 +41,14 @@ results.
 | c09_full_proof       | 6.483                   | 5.643    | 6.940     |
 | d10_swiyu_jwt        | 18.419                  | 16.154   | 21.013    |
 
-*Note: refer to [zkp-pocs](https://github.com/eid-privacy/zkp-pocs#implemented-proofs)
+*Note 1: refer to [zkp-pocs](https://github.com/eid-privacy/zkp-pocs#implemented-proofs)
 for circuit implementation details.*
+
+*Note 2: sizes for the swiyu proof:*
+
+- *Proof: 14656 bytes — constant for all Barretenberg proofs*
+- *Circuit: 2.5MB — one per proving circuit, reusable across certificates*
+- *Setup: 32MB — generic for all Barretenberg proofs of this size, shared across circuits*
 
 <figure style="text-align: center;">
   <img src="/assets/images/android_swiyu.png" alt="Swiyu age verification with holder binding running in Android" style="width: 30%; display: block; margin: 0 auto;">
