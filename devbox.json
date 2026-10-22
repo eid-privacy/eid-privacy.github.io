@@ -11,6 +11,9 @@
     "scripts": {
       "serve": [
         "bundle exec jekyll serve"
+      ],
+      "typst-posts": [
+        "bundle exec \"$(head -1 \"$(which bundle)\" | cut -c3-)\" scripts/typst-posts.rb 2>/dev/null"
       ]
     }
   }

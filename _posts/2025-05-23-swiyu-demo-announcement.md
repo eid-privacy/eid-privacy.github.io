@@ -2,7 +2,7 @@
 layout: post
 title:  "Open Source SWIYU Demo application"
 date:   2025-05-23 08:30:00 +0200
-categories: WP1, WP2
+categories: [WP1, WP2]
 ---
 
 We are excited to announce the launch of a new open source repository featuring a proof-of-concept web application for the SWIYU infrastructure.
