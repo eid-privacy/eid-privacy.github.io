@@ -26,7 +26,7 @@ We focused our search on the implementation of the cryptographic primitives iden
 as this is the area we want to contribute the most.
 
 To systematically evaluate the available libraries, we established a set of criteria based on 
-the [evaluation framework](https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md) 
+the [evaluation framework](https://eid-privacy.github.io/zkp-vault/eID/Library-Evaluation/) 
 we developed for comparing cryptographic libraries. Each library was assessed across six key dimensions:
 
 1. **Software Structure**: Code quality, architectural decisions, and engineering practices
@@ -37,7 +37,7 @@ we developed for comparing cryptographic libraries. Each library was assessed ac
 6. **Probable Support on the Next 2-3 Years**: Likelihood of continued maintenance and support
 
 For a complete overview of our evaluation methodology and all libraries we considered, 
-see our [WP2-Libraries repository](https://github.com/eid-privacy/WP2-Libraries/blob/main/README.md).
+see our [library evaluation in the zkp-vault](https://eid-privacy.github.io/zkp-vault/eID/Library-Evaluation/).
 
 ### Why we Chose Docknetwork
 
