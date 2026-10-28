@@ -18,11 +18,10 @@ for ZKPs in electronic identities as well.
 In addition to our main
 [ZKP Proof of Concepts](https://github.com/eid-privacy/zkp-pocs)
 repository, we ran
-[extensive experiments](https://github.com/eid-privacy/noir-experiments)
+extensive internal experiments
 to better understand how to use Noir effectively.
 One of these benchmarks tested the proving time as a function of
-`BoundedVec` input sizes, and you can find it here:
-[noir-benchmarks](https://github.com/eid-privacy/noir-benchmarks).
+`BoundedVec` input sizes.
 
 Noir supports `BoundedVec` as an input type.
 This behaves similarly to a variable-length string, but only up
