@@ -13,8 +13,8 @@ An example would be: querying trust registries and revocation lists without leak
 
 This is a first step towards a systematic approach to comparing digital identity systems.
 
-You can download it here: [taxonomy-eid-paper.pdf](https://github.com/eid-privacy/sok-eid/releases/latest/download/taxonomy-eid-paper.pdf).
+You can download it here: [eid-privacy-taxonomy-eid.pdf](https://github.com/eid-privacy/zkp-reports/releases/download/latest/eid-privacy-taxonomy-eid.pdf).
 
-If you prefer to build it yourself, use the github repository [github.com/eid-privacy/sok-eid](https://github.com/eid-privacy/sok-eid)
+If you prefer to build it yourself, use the github repository [github.com/eid-privacy/zkp-reports](https://github.com/eid-privacy/zkp-reports)
 
 

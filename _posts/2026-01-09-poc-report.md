@@ -40,7 +40,7 @@ There are two big caveats with regard to the Noir / Longfellow comparison:
 compiled and used by a proof system based on elliptic curves
 
 For more details, please read the 
-[Project Report](https://github.com/eid-privacy/MS2-Minimal-Viable-Project/releases/download/latest/eid_privacy-101.292-IP-ICT-ms2-report.pdf).
+[Project Report](https://github.com/eid-privacy/zkp-reports/releases/download/latest/eid-privacy-MS2.pdf).
 
 You can find the code here, complete with a README which explains how
 to run the experiments on your own computer:
@@ -52,7 +52,7 @@ to run the experiments on your own computer:
 If you want to know more details, you can have a look at our report for
 the Innosuisse project:
 
-[Secure and Privacy-Preserving Credentials for E-ID](https://github.com/eid-privacy/MS2-Minimal-Viable-Project/releases/download/latest/eid_privacy-101.292-IP-ICT-ms2-report.pdf)
+[Secure and Privacy-Preserving Credentials for E-ID](https://github.com/eid-privacy/zkp-reports/releases/download/latest/eid-privacy-MS2.pdf)
 
 You will find a short introduction of what the goals are, an overlook of the
 different ZKP types we looked into, and the experiments we ran.
